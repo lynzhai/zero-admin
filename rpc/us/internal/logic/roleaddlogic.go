@@ -53,7 +53,10 @@ func (l *RoleAddLogic) RoleAdd(in *us.RoleAddReq) (*us.RoleAddResp, error) {
 	}
 	// 增加 role缓存
 	if id, err := result.LastInsertId(); err == nil {
-		AddRoleId(l.svcCtx.RedisConn, id)
+		exists, _ := RoleRedisCacheExists(l.svcCtx.RedisConn)
+		if exists {
+			AddRoleId(l.svcCtx.RedisConn, id)
+		}
 	}
 	return &us.RoleAddResp{
 		Result: true,

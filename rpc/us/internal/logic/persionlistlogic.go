@@ -2,8 +2,10 @@ package logic
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/tal-tech/go-zero/core/logx"
+	"go-zero-admin/rpc/model/usmodel"
 	"go-zero-admin/rpc/us/internal/svc"
 	"go-zero-admin/rpc/us/us"
 )
@@ -30,7 +32,20 @@ func (l *PersionListLogic) PersionList(in *us.PersionListReq) (*us.PersionListRe
 	//var list []*ums.GrowthChangeHistoryListData
 	var list []*us.PersionData
 	for _, item := range *all {
-
+		usRole, err := l.svcCtx.UsRolesModel.FindOne(item.RoleId.Int64)
+		if err != nil {
+			usRole = &usmodel.UsRoles{
+				Id: 0,
+				RoleName: sql.NullString{
+					String: "",
+					Valid:  false,
+				},
+				Remark: sql.NullString{
+					String: "",
+					Valid:  false,
+				},
+			}
+		}
 		list = append(list, &us.PersionData{
 			Id:          item.Id,
 			PhoneNumber: item.PhoneNumber.String,
@@ -40,10 +55,11 @@ func (l *PersionListLogic) PersionList(in *us.PersionListReq) (*us.PersionListRe
 			Email:       item.Email.String,
 			Gender:      item.Sex.String,
 			Name:        item.Name.String,
-			RoleType:    item.RoleId.Int64,
+			RoleId:      item.RoleId.Int64,
+			RoleType:    usRole.RoleName.String,
 			State:       item.State.Int64,
-			CreateTime:    item.CreateTime.Time.String(),
-			UpdateTime:    item.UpdateTime.Time.String(),
+			CreateTime:  item.CreateTime.Time.String(),
+			UpdateTime:  item.UpdateTime.Time.String(),
 		})
 	}
 

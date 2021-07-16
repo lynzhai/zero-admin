@@ -3,6 +3,10 @@ package usmodel
 import (
 	"database/sql"
 	"fmt"
+	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
+	"github.com/tal-tech/go-zero/core/stores/mongo"
+	"log"
 	"strings"
 	"time"
 
@@ -12,6 +16,9 @@ import (
 	"github.com/tal-tech/go-zero/core/stringx"
 	"github.com/tal-tech/go-zero/tools/goctl/model/sql/builderx"
 )
+
+
+
 
 var (
 	usRolesFieldNames          = builderx.RawFieldNames(&UsRoles{})
@@ -24,6 +31,30 @@ var (
 	cacheUsRolesIdPrefix = "cache#usRoles#id#"
 )
 
+type Roster struct {
+	Id          bson.ObjectId `bson:"_id"`
+	CreateTime  time.Time     `bson:"createTime"`
+	Classroom   mgo.DBRef     `bson:"classroom"`
+	Member      mgo.DBRef     `bson:"member"`
+	DisplayName string        `bson:"displayName"`
+}
+
+func myTest(){
+	model := mongo.MustNewModel("localhost:27017/blackboard", "roster")
+	for i := 0; i < 1000; i++ {
+		session, err := model.TakeSession()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var roster Roster
+		filter := bson.M{"_id": bson.ObjectIdHex("587353380cf2d7273d183f9e")}
+		fmt.Println(model.GetCollection(session).Find(filter).One(&roster))
+		model.PutSession(session)
+	}
+
+	time.Sleep(time.Hour)
+}
 type (
 	UsRolesModel interface {
 		Insert(data UsRoles) (sql.Result, error)
@@ -46,7 +77,7 @@ type (
 		Remark     sql.NullString `db:"remark"`
 		CreateTime sql.NullTime   `db:"create_time"`
 		UpdateTime sql.NullTime   `db:"update_time"`
-		DeleteTime   sql.NullTime   `db:"delete_time"`
+		DeleteTime sql.NullTime   `db:"delete_time"`
 	}
 )
 

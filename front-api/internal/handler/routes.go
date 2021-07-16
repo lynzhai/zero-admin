@@ -12,6 +12,8 @@ import (
 	productcategory "go-zero-admin/front-api/internal/handler/product/category"
 	productproduct "go-zero-admin/front-api/internal/handler/product/product"
 	smshome "go-zero-admin/front-api/internal/handler/sms/home"
+	subjectsignalchoice "go-zero-admin/front-api/internal/handler/subject/signalchoice"
+	subjectsubject "go-zero-admin/front-api/internal/handler/subject/subject"
 	"go-zero-admin/front-api/internal/svc"
 
 	"github.com/tal-tech/go-zero/rest"
@@ -155,6 +157,83 @@ func RegisterHandlers(engine *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/persion/persion/info",
 				Handler: persionpersion.PersionInfoHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+	)
+
+	engine.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/add",
+				Handler: subjectsubject.SubjectAddHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/mainteacherlist",
+				Handler: subjectsubject.SubjectListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/delete",
+				Handler: subjectsubject.SubjectDeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/update",
+				Handler: subjectsubject.SubjectUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/find",
+				Handler: subjectsubject.SubjectFindHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/findstudentsbysubject",
+				Handler: subjectsubject.FindStudentsBySubjectHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/deletestudentinsubject",
+				Handler: subjectsubject.DeleteStudentInSubjectHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/subject/addstudentinsubject",
+				Handler: subjectsubject.AddStudentInSubjectHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/student/findsubjectsbystudent",
+				Handler: subjectsubject.FindSubjectsByStudentHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+	)
+
+	engine.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/signalchoice/addsignalchoice",
+				Handler: subjectsignalchoice.AddSignalChoiceHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/signalchoice/updatesignalchoice",
+				Handler: subjectsignalchoice.UpdateSignalChoiceHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/signalchoice/deletesignalchoice",
+				Handler: subjectsignalchoice.DeleteSignalChoiceHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/signalchoice/findsignalchoice",
+				Handler: subjectsignalchoice.FindSignalChoiceHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

@@ -17,9 +17,9 @@ import (
 
 const bizContentCacheKey = `biz#role#cache`
 
-//func RoleRedisCacheExists(r *redis.Redis) (bool, error) {
-//	return r.Exists(bizContentCacheKey)
-//}
+func RoleRedisCacheExists(r *redis.Redis) (bool, error) {
+	return r.Exists(bizContentCacheKey)
+}
 
 // AddContent 提供内容存储
 func AddRole(r *redis.Redis, c *usmodel.UsRoles) error {

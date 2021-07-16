@@ -54,3 +54,10 @@ UsRpc:
     Hosts:
       - 192.168.217.129:2379
     Key: us.rpc
+
+#Subject
+SuRpc:
+  Etcd:
+    Hosts:
+      - 192.168.217.129:2379
+    Key: su.rpc

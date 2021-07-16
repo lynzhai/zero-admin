@@ -55,6 +55,7 @@ func (l *PersionInfoLogic) PersionInfo(in *us.PersionInfoReq) (*us.PersionInfoRe
 			Name:        usUser.Name.String,
 			State:       usUser.State.Int64,
 			CreateTime:  usUser.CreateTime.Time.String(),
+			UpdateTime:  usUser.UpdateTime.Time.String(),
 			RoleId:      usUser.RoleId.Int64,
 			RoleName:    roleName,
 			Class:       roleExtendMap["class"],

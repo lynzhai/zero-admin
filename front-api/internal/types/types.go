@@ -437,7 +437,7 @@ type PersionRegisterResp struct {
 
 type PersionInfo struct {
 	Id          int64  `json:"id"`
-	Name        string `json:"Name"`
+	Name        string `json:"name"`
 	PhoneNumber string `json:"phoneNumber"`
 	Email       string `json:"email"`
 	RoleName    string `json:"roleName"`
@@ -503,4 +503,242 @@ type AllRoleResp struct {
 	Code    int64       `json:"code"`
 	Message string      `json:"message"`
 	Data    AllRoleData `json:"data"`
+}
+
+type SubjectInfo struct {
+	Id                 int64  `json:"id"`
+	Uuid               string `json:"uuid"`
+	Name               string `json:"name"`
+	Status             int64  `json:"status"`
+	Code               string `json:"code"`
+	MaxPersion         int64  `json:"maxPersion"`
+	MainTeacherId      int64  `json:"mainTeacherId"`
+	AssistantTeacherId int64  `json:"assistantTeacherId"`
+	Introduce          string `json:"introduce"`
+	Backup             string `json:"backup"`
+	CreateTime         string `json:"createTime"`
+	UpdateTime         string `json:"updateTime"`
+	DeleteTime         string `json:"deleteTime"`
+}
+
+type SubjectAddReq struct {
+	Name               string `json:"name" validate:"required,min=2"`
+	Status             int64  `json:"status,default=1"`
+	Code               string `json:"code" validate:"required,len=8"`
+	MaxPersion         int64  `json:"maxPersion" validate:"required,min=1,max=300"`
+	MainTeacherId      int64  `json:"mainTeacherId" validate:"required,gt=0"`
+	AssistantTeacherId int64  `json:"assistantTeacherId" validate:"gte=0"`
+	Introduce          string `json:"introduce,optional"`
+	Backup             string `json:"backup,optional"`
+}
+
+type SubjectAddResp struct {
+	Code    int64       `json:"code"`
+	Message string      `json:"message"`
+	Data    SubjectInfo `json:"data"`
+}
+
+type MainTeacherSubjectListReq struct {
+	Id       int64 `json:"id" validate:"required"` // userid
+	Offset   int64 `json:"offset,default=1"`
+	PageSize int64 `json:"pageSize,default=10"`
+}
+
+type MainTeacherSubjectListData struct {
+	SubjectInfos []*SubjectInfo `json:"subjectInfos"`
+	Total        int64          `json:"total"`
+}
+
+type MainTeacherSubjectListResp struct {
+	Code    int64                      `json:"code"`
+	Message string                     `json:"message"`
+	Data    MainTeacherSubjectListData `json:"data"`
+}
+
+type SubjectUpdateReq struct {
+	Id                 int64  `json:"id" validate:"required,gt=0"`
+	Uuid               string `json:"uuid" validate:"required,min=10"`
+	Name               string `json:"name" validate:"required,min=2"`
+	Status             int64  `json:"status,defalut=1"`
+	Code               string `json:"code" validate:"required,min=8"`
+	MaxPersion         int64  `json:"maxPersion" validate:"required,min=1,max=300"`
+	MainTeacherId      int64  `json:"mainTeacherId" validate:"required,gt=0"`
+	AssistantTeacherId int64  `json:"assistantTeacherId" validate:"gte=0"`
+	Introduce          string `json:"introduce"`
+	Backup             string `json:"backup"`
+}
+
+type SubjectUpdateResp struct {
+	Code    int64       `json:"code"`
+	Message string      `json:"message"`
+	Data    SubjectInfo `json:"data"`
+}
+
+type SubjectDeleteReq struct {
+	Id int64 `json:"id"` // subject id
+}
+
+type SubjectDeleteRespData struct {
+	Result bool `json:"result"`
+}
+
+type SubjectDeleteResp struct {
+	Code    int64                 `json:"code"`
+	Message string                `json:"message"`
+	Data    SubjectDeleteRespData `json:"data"`
+}
+
+type SubjectFindReq struct {
+	Id int64 `json:"id" validate:"required,gt=0"` // subject id
+}
+
+type SubjectFindRespData struct {
+	Result bool `json:"result"`
+}
+
+type SubjectFindResp struct {
+	Code    int64       `json:"code"`
+	Message string      `json:"message"`
+	Data    SubjectInfo `json:"data"`
+}
+
+type FindStudentsBySubjectReq struct {
+	SubjectId int64 `json:"subjectId" validate:"required,gt=0"` // subject id
+	Offset    int64 `json:"offset,default=1"`
+	PageSize  int64 `json:"pageSize,default=10"`
+}
+
+type FindStudentsBySubjectRespListData struct {
+	PersionInfos []*PersionInfo `json:"persionInfos"`
+	Total        int64          `json:"total"`
+}
+
+type FindStudentsBySubjectResp struct {
+	Code    int64                             `json:"code"`
+	Message string                            `json:"message"`
+	Data    FindStudentsBySubjectRespListData `json:"data"`
+}
+
+type DeleteStudentInSubjectReq struct {
+	UserId    int64 `json:"userId" validate:"required,gt=0"`    // user  id
+	SubjectId int64 `json:"subjectId" validate:"required,gt=0"` // subject  id
+}
+
+type DeleteStudentInSubjectRespData struct {
+	Result bool `json:"result"`
+}
+
+type DeleteStudentInSubjectResp struct {
+	Code    int64                          `json:"code"`
+	Message string                         `json:"message"`
+	Data    DeleteStudentInSubjectRespData `json:"data"`
+}
+
+type AddStudentInSubjectReq struct {
+	UserId    int64 `json:"userId" validate:"required,gt=0"`    // user  id
+	SubejctId int64 `json:"subjectId" validate:"required,gt=0"` // subject  id
+}
+
+type AddStudentInSubjectRespData struct {
+	Result bool `json:"result"`
+}
+
+type AddStudentInSubjectResp struct {
+	Code    int64                       `json:"code"`
+	Message string                      `json:"message"`
+	Data    AddStudentInSubjectRespData `json:"data"`
+}
+
+type FindSubjectsByStudentReq struct {
+	UserId   int64 `json:"userId" validate:"required,gt=0"` // user id
+	Offset   int64 `json:"offset,defalut=1"`
+	PageSize int64 `json:"pageSize,defalut=10"`
+}
+
+type FindSubjectsByStudentRespListData struct {
+	SubjectInfos []*SubjectInfo `json:"subjectInfos"`
+	Total        int64          `json:"total"`
+}
+
+type FindSubjectsByStudentResp struct {
+	Code    int64                             `json:"code"`
+	Message string                            `json:"message"`
+	Data    FindSubjectsByStudentRespListData `json:"data"`
+}
+
+type SignalChoiceInfo struct {
+	Id            string `json:"id"`
+	Title         string `json:"title"`
+	AAnswer       string `json:"aAnswer"`
+	BAnswer       string `json:"bAnswer"`
+	CAnswer       string `json:"cAnswer"`
+	DAnswer       string `json:"dAnswer"`
+	EAnswer       string `json:"eAnswer"`
+	FAnswer       string `json:"fAnswer"`
+	CorrectAnswer string `json:"correctAnswer"`
+	Version       string `json:"version"`
+	CreateTime    string `json:"createTime"`
+	UpdateTime    string `json:"updateTime"`
+	DeleteTime    string `json:"deleteTime"`
+}
+
+type AddSignalChoiceReq struct {
+	Title         string `json:"title" validate:"required,gt=4"`
+	AAnswer       string `json:"aAnswer" validate:"required,gt=0"`
+	BAnswer       string `json:"bAnswer" validate:"required,gt=0"`
+	CAnswer       string `json:"cAnswer,optional"`
+	DAnswer       string `json:"dAnswer,optional"`
+	EAnswer       string `json:"eAnswer,optional"`
+	FAnswer       string `json:"fAnswer,optional"`
+	CorrectAnswer string `json:"correctAnswer,options=A|B|C|D|E|F"`
+	Version       string `json:"version,optional"`
+}
+
+type AddSignalChoiceResp struct {
+	Code    int64            `json:"code"`
+	Message string           `json:"message"`
+	Data    SignalChoiceInfo `json:"data"`
+}
+
+type UpdateSignalChoiceReq struct {
+	Id            string `json:"id" validate:"required,gt=4"`
+	Title         string `json:"title" validate:"required,gt=4"`
+	AAnswer       string `json:"aAnswer" validate:"required,gt=0"`
+	BAnswer       string `json:"bAnswer" validate:"required,gt=0"`
+	CAnswer       string `json:"cAnswer,optional"`
+	DAnswer       string `json:"dAnswer,optional"`
+	EAnswer       string `json:"eAnswer,optional"`
+	FAnswer       string `json:"fAnswer,optional"`
+	CorrectAnswer string `json:"correctAnswer,options=A|B|C|D|E|F"`
+	Version       string `json:"version,optional"`
+}
+
+type UpdateSignalChoiceResp struct {
+	Code    int64            `json:"code"`
+	Message string           `json:"message"`
+	Data    SignalChoiceInfo `json:"data"`
+}
+
+type DeleteSignalChoiceReq struct {
+	Id string `json:"id" validate:"required,gt=4"`
+}
+
+type DeleteSignalChoiceRespData struct {
+	Result bool `json:"result"`
+}
+
+type DeleteSignalChoiceResp struct {
+	Code    int64                      `json:"code"`
+	Message string                     `json:"message"`
+	Data    DeleteSignalChoiceRespData `json:"data"`
+}
+
+type FindSignalChoiceReq struct {
+	Id string `json:"id" validate:"required,gt=4"`
+}
+
+type FindSignalChoiceResp struct {
+	Code    int64            `json:"code"`
+	Message string           `json:"message"`
+	Data    SignalChoiceInfo `json:"data"`
 }

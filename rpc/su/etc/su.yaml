@@ -1,0 +1,24 @@
+Name: su.rpc
+ListenOn: 127.0.0.1:9082
+Log:
+  Mode: console
+  Level: info
+Etcd:
+  Hosts:
+    - 192.168.217.129:2379
+  Key: su.rpc
+Mysql:
+  Datasource: root:newclass!123654@tcp(192.168.217.129:3306)/gozero?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+CacheRedis:
+  - Host: 192.168.217.129:6379
+
+Mongo:
+  Url: mongodb://zql:zql123321@192.168.217.129:27018/paper
+
+#us
+UsRpc:
+  Etcd:
+    Hosts:
+      - 192.168.217.129:2379
+    Key: us.rpc

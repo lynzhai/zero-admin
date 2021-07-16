@@ -59,7 +59,7 @@ func (l *PersionAddLogic) PersionAdd(in *us.PersionAddReq) (*us.PersionAddResp, 
 			Valid:  true,
 		},
 		RoleId: sql.NullInt64{
-			Int64: in.Data.RoleType,
+			Int64: in.Data.RoleId,
 			Valid: true,
 		},
 		State: sql.NullInt64{

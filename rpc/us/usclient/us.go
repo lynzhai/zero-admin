@@ -14,33 +14,33 @@ import (
 )
 
 type (
-	PersionAddResp      = us.PersionAddResp
-	RoleListReq         = us.RoleListReq
-	PersionInfoReq      = us.PersionInfoReq
-	RoleDeleteResp      = us.RoleDeleteResp
-	PersionDeleteResp   = us.PersionDeleteResp
-	RoleAddResp         = us.RoleAddResp
-	RoleData            = us.RoleData
-	PersionUpdateResp   = us.PersionUpdateResp
-	PersionData         = us.PersionData
-	RoleDeleteReq       = us.RoleDeleteReq
-	PersionLoginReq     = us.PersionLoginReq
-	PersionInfoResp     = us.PersionInfoResp
-	PersionListReq      = us.PersionListReq
-	RoleListResp        = us.RoleListResp
-	AllRoleResp         = us.AllRoleResp
-	RoleUpdateReq       = us.RoleUpdateReq
-	RoleUpdateResp      = us.RoleUpdateResp
-	RoleAddReq          = us.RoleAddReq
-	AllRoleReq          = us.AllRoleReq
-	PersionLoginResp    = us.PersionLoginResp
+	PersionAddReq       = us.PersionAddReq
 	PersionInfo         = us.PersionInfo
+	PersionInfoReq      = us.PersionInfoReq
 	PersionRegisterReq  = us.PersionRegisterReq
 	PersionRegisterResp = us.PersionRegisterResp
-	PersionListResp     = us.PersionListResp
 	PersionUpdateReq    = us.PersionUpdateReq
+	RoleAddReq          = us.RoleAddReq
+	RoleAddResp         = us.RoleAddResp
+	RoleListResp        = us.RoleListResp
+	RoleUpdateReq       = us.RoleUpdateReq
+	PersionLoginReq     = us.PersionLoginReq
+	PersionInfoResp     = us.PersionInfoResp
+	RoleDeleteResp      = us.RoleDeleteResp
+	PersionData         = us.PersionData
+	PersionAddResp      = us.PersionAddResp
+	PersionUpdateResp   = us.PersionUpdateResp
+	RoleListReq         = us.RoleListReq
 	PersionDeleteReq    = us.PersionDeleteReq
-	PersionAddReq       = us.PersionAddReq
+	PersionListResp     = us.PersionListResp
+	PersionDeleteResp   = us.PersionDeleteResp
+	PersionListReq      = us.PersionListReq
+	RoleData            = us.RoleData
+	RoleDeleteReq       = us.RoleDeleteReq
+	PersionLoginResp    = us.PersionLoginResp
+	RoleUpdateResp      = us.RoleUpdateResp
+	AllRoleReq          = us.AllRoleReq
+	AllRoleResp         = us.AllRoleResp
 
 	Us interface {
 		PersionAdd(ctx context.Context, in *PersionAddReq) (*PersionAddResp, error)

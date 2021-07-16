@@ -11,10 +11,11 @@ message PersionData {
   string       Email = 6;
   string       Gender = 7;
   string       Name = 8;
-  int64        RoleType = 9;
-  int64        State = 10;
-  string       CreateTime = 11;
-  string       UpdateTime = 12;
+  int64        RoleId = 9;
+  string       RoleType = 10;
+  int64        State = 11;
+  string       CreateTime = 12;
+  string       UpdateTime = 13;
 }
 
 message PersionAddReq {
@@ -149,12 +150,13 @@ message PersionInfo{
   string       Name = 7;
   int64        State = 8;
   string       CreateTime = 9;
-  int64        roleId = 10;
-  string       roleName = 11;
-  string       class = 12;
-  string       academy = 13;
-  string       school = 14;
-  string       grade = 15;
+  string       UpdateTime = 10;
+  int64        roleId = 11;
+  string       roleName = 12;
+  string       class = 13;
+  string       academy = 14;
+  string       school = 15;
+  string       grade = 16;
 
 }
 

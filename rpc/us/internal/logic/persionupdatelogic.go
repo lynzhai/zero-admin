@@ -58,7 +58,7 @@ func (l *PersionUpdateLogic) PersionUpdate(in *us.PersionUpdateReq) (*us.Persion
 			Valid:  true,
 		},
 		RoleId: sql.NullInt64{
-			Int64: in.Data.RoleType,
+			Int64: in.Data.RoleId,
 			Valid: true,
 		},
 		State: sql.NullInt64{

@@ -32,7 +32,7 @@ type(
 
     PersionInfo struct{
         Id                int64  `json:"id"`
-        Name              string `json:"Name"`
+        Name              string `json:"name"`
         PhoneNumber       string `json:"phoneNumber"`
         Email             string `json:"email"`
         RoleName          string `json:"roleName"`

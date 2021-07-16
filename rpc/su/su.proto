@@ -2,7 +2,151 @@ syntax = "proto3";
 
 package su;
 
-message PersionData {
+message SubjectInfo {
+  int64        Id = 1;
+  string       Uuid = 2;
+  string       Name = 3;
+  int64        Status = 4;
+  string       Code = 5;
+  int64        MaxPersion = 6;
+  int64        MainTeacherId = 7;
+  int64        AssistantTeacherId = 8;
+  string       Introduce = 9;
+  string       Backup = 10;
+  string       CreateTime = 11;
+  string       UpdateTime = 12;
+  string       DeleteTime = 13;
+}
+
+message SubjectAddReq{
+  string       Name = 1;
+  int64        Status = 2;
+  string       Code = 3;
+  int64        MaxPersion = 4;
+  int64        MainTeacherId = 5;
+  int64        AssistantTeacherId = 6;
+  string       Introduce = 7;
+  string       Backup = 8;
+}
+
+message SubjectAddResp{
+  bool Result = 1;
+  SubjectInfo SubjectInfoData = 2;
+}
+
+message MainTeacherSubjectListReq{
+  int64 Id = 1;
+  int64 Offset = 2;
+  int64 PageSize = 3;
+}
+message MainTeacherSubjectListReap{
+  int64     Total = 1;
+  repeated  SubjectInfo List = 2;
+}
+
+
+message SubjectUpdateReq{
+  int64       Id = 1;
+  string      Uuid = 2;
+  string       Name = 3;
+  int64        Status = 4;
+  string       Code = 5;
+  int64        MaxPersion = 6;
+  int64        MainTeacherId = 7;
+  int64        AssistantTeacherId = 8;
+  string       Introduce = 9;
+  string       Backup = 10;
+}
+
+message SubjectUpdateResp{
+  bool Result = 1;
+  SubjectInfo SubjectInfoData = 2;
+}
+
+message SubjectDeleteReq{
+  int64 Id = 1;
+}
+
+message SubjectDeleteResp{
+  bool Result = 1;
+}
+
+message SubjectFindReq{
+  int64 SubjectId = 1;
+}
+
+message SubjectFindResp{
+  SubjectInfo SubjectInfoData = 1;
+}
+
+message SubjectLearnInfo{
+  int64        Id = 1;
+  int64        UserId = 2;
+  int64        SubjectId = 3;
+  string       CreateTime = 4;
+}
+
+message SubjectLearnAddReq{
+  int64        UserId = 1;
+  int64        SubjectId = 2;
+}
+
+message SubjectLearnAddResp{
+  bool Result = 1;
+  SubjectLearnInfo SubjectLearnInfoData = 2;
+}
+
+message SubjectLearnDeleteReq{
+  int64        Id = 1;
+}
+
+message SubjectLearnDeleteResp{
+  bool Result = 1;
+}
+
+message SubjectLearnUpdateReq{
+  int64        Id = 1;
+  int64        UserId = 2;
+  int64        SubjectId = 3;
+}
+
+message SubjectLearnUpdateResp{
+  bool Result = 1;
+  SubjectLearnInfo SubjectLearnInfoData = 2;
+}
+
+message SubjectLearnFindReq{
+  int64 Id = 1;
+}
+
+message SubjectLearnFindResp{
+  SubjectLearnInfo SubjectLearnInfoData = 1;
+}
+
+message SubjectLearnFindListByUserIdReq{
+  int64 UserId = 1;
+  int64 Offset = 2;
+  int64 PageSize = 3;
+}
+
+message SubjectLearnFindListByUserIdResp{
+  int64     Total = 1;
+  repeated  SubjectLearnInfo List = 2;
+}
+
+message SubjectLearnFindListBySubjectIdReq{
+  int64 SubjectId = 1;
+  int64 Offset = 2;
+  int64 PageSize = 3;
+}
+
+message SubjectLearnFindListBySubjectIdResp{
+  int64     Total = 1;
+  repeated  SubjectLearnInfo List = 2;
+}
+
+
+message PersionInfo {
   int64        Id = 1;
   string       PhoneNumber = 2;
   string       Password = 3;
@@ -11,214 +155,158 @@ message PersionData {
   string       Email = 6;
   string       Gender = 7;
   string       Name = 8;
-  int64        RoleType = 9;
-  int64        State = 10;
-  string       CreateTime = 11;
-  string       UpdateTime = 12;
+  int64        RoleId = 9;
+  string       RoleType = 10;
+  int64        State = 11;
+  string       CreateTime = 12;
+  string       UpdateTime = 13;
+  string       Class = 14;
+  string       Academy = 15;
+  string       School = 16;
+  string       Grade = 17;
 }
 
-message PersionAddReq {
-  PersionData Data = 1;
-}
-
-message PersionAddResp {
-  bool   Result = 1;
-}
-
-message PersionListReq {
-  int64 Current = 1;
-  int64 PageSize = 2;
-}
-
-
-message PersionListResp {
-  int64 Total = 1;
-  repeated  PersionData list = 2;
-}
-
-message PersionUpdateReq {
-  PersionData Data = 1;
-}
-
-message PersionUpdateResp {
-  bool   Result = 1;
-}
-
-message PersionDeleteReq {
-  int64 Id = 1;
-}
-
-message PersionDeleteResp {
-  bool   Result = 1;
-}
-
-
-message RoleData {
-  int64        Id = 1;
-  string       RoleName = 2;
-  string       Remark = 3;
-  string       CreateTime = 4;
-  string       UpdateTime = 5;
+message FindStudentsInSubjectReq{
+  int64 SubjectId = 2;
+  int64 Offset = 3;
+  int64 PageSize = 4;
 }
 
 
 
-message RoleAddReq {
-  RoleData Data = 1;
-}
-
-message RoleAddResp {
-  bool   Result = 1;
-}
-
-message RoleListReq {
-  int64 Current = 1;
-  int64 PageSize = 2;
-}
-
-
-message RoleListResp {
+message FindStudentsInSubjectResp{
   int64     Total = 1;
-  repeated  RoleData List = 2;
-}
-
-message  AllRoleReq{
-
-}
-
-message  AllRoleResp{
-  int64     Total = 1;
-  repeated  RoleData List = 2;
-}
-
-message RoleUpdateReq {
-  RoleData Data = 1;
-}
-
-message RoleUpdateResp {
-  bool        Result = 1;
-}
-
-message RoleDeleteReq {
-  int64 Id = 1;
-}
-
-message RoleDeleteResp {
-  bool   Result = 1;
+  repeated  PersionInfo List = 2;
 }
 
 
-
-message PersionLoginReq {
-  string PhoneNumber = 1;
-  string Password = 2;
+message FindSubjectByStudentReq{
+  int64 UserId = 1;
+  int64 Offset = 2;
+  int64 PageSize = 3;
 }
 
-message PersionLoginResp {
-    PersionInfo Data = 1;
-}
-
-message PersionRegisterReq {
-  string  PhoneNumber = 1;
-  string  Password = 2;
-  string  Number = 3;
-  string  Email = 4;
-  string  Gender = 5;
-  string  Name = 6;
-  int64   RoleId = 7;
-  string  class = 8;
-  string  academy = 9;
-  string  school = 10;
-  string  grade = 11;
-
-
-}
-
-message PersionRegisterResp {
-  bool Result = 1;
-}
-
-
-message PersionInfo{
-  int64        Id = 1;
-  string       PhoneNumber = 2;
-  string       UniqueId = 3;
-  string       Number = 4;
-  string       Email = 5;
-  string       Gender = 6;
-  string       Name = 7;
-  int64        State = 8;
-  string       CreateTime = 9;
-  int64        roleId = 10;
-  string       roleName = 11;
-  string       class = 12;
-  string       academy = 13;
-  string       school = 14;
-  string       grade = 15;
-
-}
-
-
-message PersionInfoReq {
-  int64 Id = 1;
-}
-
-message PersionInfoResp {
-    PersionInfo Info = 1;
-}
-
-message SubjectInfo {
-  int64        Id = 1;
-  string       Uuid  = 2;
-  string       Name   = 3;
-  int64        Status   = 4;
-  string       Code   = 5;
-  int64        MaxPersion   = 6;
-  int64        MainTeacherId   = 7;
-  int64        AssistantTeacherId   = 8;
-  string       Introduce   = 9;
-  string       Backup   = 10;
-  string       CreateTime   = 11;
-  string       UpdateTime   = 12;
-  string       DeleteTime   = 13;
-}
-
-message SubjectAddReq{
-  SubjectInfo RoleData = 1;
-}
-
-message SubjectAddReap{
-  bool Result = 1;
-  SubjectInfo RoleData = 2;
-}
-
-message MainTeacherSubjectListReq{
-  int64 Id = 1;
-}
-message MainTeacherSubjectListReap{
+message FindSubjectByStudentResp{
   int64     Total = 1;
   repeated  SubjectInfo List = 2;
 }
 
+message AddStudentToSubjectReq{
+  int64 UserId = 1;
+  int64 SubjectId = 2;
+
+}
+
+message AddStudentToSubjectResp{
+  bool Result = 1;
+}
+
+message DeleteStudentInSubjectReq{
+  int64 UserId = 1;
+  int64 SubjectId = 2;
+
+}
+
+message DeleteStudentInSubjectResp{
+  bool Result = 1;
+}
 
 
+message SignalChoiceInfo{
+  string Id = 1;
+  string Title = 2;
+  string AAnswer = 3;
+  string BAnswer = 4;
+  string CAnswer = 5;
+  string DAnswer = 6;
+  string EAnswer = 7;
+  string FAnswer = 8;
+  string CorrectAnswer = 9;
+  string Version = 10;
+  string CreateTime = 11;
+  string UpdateTime = 12;
+  string deleteTime = 13;
+}
 
-service Us {
-  rpc PersionAdd(PersionAddReq) returns(PersionAddResp);
-  rpc PersionList(PersionListReq) returns(PersionListResp);
-  rpc PersionUpdate(PersionUpdateReq) returns(PersionUpdateResp);
-  rpc PersionDelete(PersionDeleteReq) returns(PersionDeleteResp);
+message AddSignalChoiceReq{
+  string Title = 1;
+  string AAnswer = 2;
+  string BAnswer = 3;
+  string CAnswer = 4;
+  string DAnswer = 5;
+  string EAnswer = 6;
+  string FAnswer = 7;
+  string CorrectAnswer = 8;
+  string Version = 9;
+}
+
+message AddSignalChoiceResp{
+  bool Result = 1;
+  SignalChoiceInfo SignalChoice = 2;
+}
+
+message UpdateSignalChoiceReq{
+  string Id = 1;
+  string Title = 2;
+  string AAnswer = 3;
+  string BAnswer = 4;
+  string CAnswer = 5;
+  string DAnswer = 6;
+  string EAnswer = 7;
+  string FAnswer = 8;
+  string CorrectAnswer = 9;
+  string Version = 10;
+}
+
+message UpdateSignalChoiceResp{
+  bool Result = 1;
+  SignalChoiceInfo SignalChoice = 2;
+}
+
+message DeleteSignalChoiceReq{
+  string Id = 1;
+}
+
+message DeleteSignalChoiceResp{
+  bool Result = 1;
+}
+
+message FindSignalChoiceReq{
+  string Id = 1;
+}
+
+message FindSignalChoiceResp{
+    SignalChoiceInfo SignalChoice = 1;
+}
+
+service Su {
+  rpc SubjectAdd(SubjectAddReq) returns(SubjectAddResp);
+  rpc SubjectList(MainTeacherSubjectListReq) returns(MainTeacherSubjectListReap);
+  rpc SubjectUpdate(SubjectUpdateReq) returns(SubjectUpdateResp);
+  rpc SubjectDelete(SubjectDeleteReq) returns(SubjectDeleteResp);
+
+  // 根据subjectid 查抄subject 表内容
+  rpc SubjectFind(SubjectFindReq) returns(SubjectFindResp);
+  // 查询某个Subject中的学生内容
+  rpc FindStudentsInSubject(FindStudentsInSubjectReq) returns(FindStudentsInSubjectResp);
+  // 查询课程中的 学生信息
+  rpc FindSubjectByStudent(FindSubjectByStudentReq) returns(FindSubjectByStudentResp);
+  // 添加学生到课程
+  rpc AddStudentToSubject(AddStudentToSubjectReq) returns(AddStudentToSubjectResp);
+  // 从课程中删除学生
+  rpc DeleteStudentInSubject(DeleteStudentInSubjectReq) returns(DeleteStudentInSubjectResp);
+
+  rpc SubjectLearnAdd(SubjectLearnAddReq) returns(SubjectLearnAddResp);
+  rpc SubjectLearnUpdate(SubjectLearnUpdateReq) returns(SubjectLearnUpdateResp);
+  rpc SubjectLearnDelete(SubjectLearnDeleteReq) returns(SubjectLearnDeleteResp);
+  rpc SubjectLearnFind(SubjectLearnFindReq) returns(SubjectLearnFindResp);
+  rpc SubjectLearnFindLisByUserId(SubjectLearnFindListByUserIdReq) returns(SubjectLearnFindListByUserIdResp);
+  rpc SubjectLearnFindLisBySubjectId(SubjectLearnFindListBySubjectIdReq) returns(SubjectLearnFindListBySubjectIdResp);
 
 
-  rpc RoleAdd(RoleAddReq) returns(RoleAddResp);
-  rpc RoleList(RoleListReq) returns(RoleListResp);
-  rpc RoleUpdate(RoleUpdateReq) returns(RoleUpdateResp);
-  rpc RoleDelete(RoleDeleteReq) returns(RoleDeleteResp);
-  rpc AllRoles(AllRoleReq) returns(AllRoleResp);
-
-  rpc PersionLogin(PersionLoginReq) returns(PersionLoginResp);
-  rpc PersionRegister(PersionRegisterReq) returns(PersionRegisterResp);
-
-  rpc PersionInfo(PersionInfoReq) returns(PersionInfoResp);
+  rpc AddSignalChoice(AddSignalChoiceReq) returns(AddSignalChoiceResp);
+  rpc UpdateSignalChoice(UpdateSignalChoiceReq) returns(UpdateSignalChoiceResp);
+  rpc DeleteSignalChoice(DeleteSignalChoiceReq) returns(DeleteSignalChoiceResp);
+  rpc FindSignalChoice(FindSignalChoiceReq) returns(FindSignalChoiceResp);
 
 }

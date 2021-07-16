@@ -28,4 +28,7 @@ type Config struct {
 
 	//Us
 	UsRpc zrpc.RpcClientConf
+
+	//subject
+	SuRpc zrpc.RpcClientConf
 }

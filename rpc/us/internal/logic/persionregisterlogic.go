@@ -31,6 +31,7 @@ func (l *PersionRegisterLogic) PersionRegister(in *us.PersionRegisterReq) (*us.P
 	if _, err := l.svcCtx.UsUsersModel.FindOneByPhoneNumber(in.PhoneNumber); err == nil {
 		return nil, errorDuplicateMobile
 	}
+	l.svcCtx.UsUsersModel.DeletePhoneNumberCache(in.PhoneNumber)
 
 	var usRole *usmodel.UsRoles
 	if tempUsRole, err := l.svcCtx.UsRolesModel.FindOne(in.RoleId); err != nil {

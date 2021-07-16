@@ -3,13 +3,13 @@ package sumodel
 import (
 	"database/sql"
 	"fmt"
-	"strings"
-
 	"github.com/tal-tech/go-zero/core/stores/cache"
 	"github.com/tal-tech/go-zero/core/stores/sqlc"
 	"github.com/tal-tech/go-zero/core/stores/sqlx"
 	"github.com/tal-tech/go-zero/core/stringx"
 	"github.com/tal-tech/go-zero/tools/goctl/model/sql/builderx"
+	"strings"
+	"time"
 )
 
 var (
@@ -17,6 +17,13 @@ var (
 	suSubjectRows                = strings.Join(suSubjectFieldNames, ",")
 	suSubjectRowsExpectAutoSet   = strings.Join(stringx.Remove(suSubjectFieldNames, "`id`", "`create_time`", "`update_time`"), ",")
 	suSubjectRowsWithPlaceHolder = strings.Join(stringx.Remove(suSubjectFieldNames, "`id`", "`create_time`", "`update_time`"), "=?,") + "=?"
+
+	//加两个 ,？  ,？
+	usSubjectRowsForInsert = strings.Join(stringx.Remove(suSubjectFieldNames, "`id`"), ",")
+
+	// 加一个 ,?
+	usSubjectRowsForUpdate     = strings.Join(stringx.Remove(suSubjectFieldNames, "`id`", "`create_time`"), "=?,") + "=?"
+	usSubjectRowsForDeleteSoft = strings.Join([]string{"delete_time"}, "=?,") + "=?"
 
 	cacheSuSubjectIdPrefix   = "cache#suSubject#id#"
 	cacheSuSubjectCodePrefix = "cache#suSubject#code#"
@@ -27,8 +34,13 @@ type (
 		Insert(data SuSubject) (sql.Result, error)
 		FindOne(id int64) (*SuSubject, error)
 		FindOneByCode(code string) (*SuSubject, error)
+		FindOneUserAll(userId int64, Current int64, PageSize int64) (*[]SuSubject, error)
+		Count(userId int64, ) (int64, error)
 		Update(data SuSubject) error
 		Delete(id int64) error
+		DeleteSoft(id int64) error
+		DeleteIdCache(id int64) error
+		DeleteCodeCache(code string) error
 	}
 
 	defaultSuSubjectModel struct {
@@ -62,9 +74,13 @@ func NewSuSubjectModel(conn sqlx.SqlConn, c cache.CacheConf) SuSubjectModel {
 
 func (m *defaultSuSubjectModel) Insert(data SuSubject) (sql.Result, error) {
 	suSubjectCodeKey := fmt.Sprintf("%s%v", cacheSuSubjectCodePrefix, data.Code)
+	data.CreateTime.Time = time.Now()
+	data.CreateTime.Valid = true
+	data.UpdateTime.Time = time.Now()
+	data.UpdateTime.Valid = true
 	ret, err := m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, suSubjectRowsExpectAutoSet)
-		return conn.Exec(query, data.Uuid, data.Name, data.Status, data.Code, data.MaxPersion, data.MainTeacherId, data.AssistantTeacherId, data.Introduce, data.Backup, data.DeleteTime)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, usSubjectRowsForInsert)
+		return conn.Exec(query, data.Uuid, data.Name, data.Status, data.Code, data.MaxPersion, data.MainTeacherId, data.AssistantTeacherId, data.Introduce, data.Backup, data.CreateTime, data.UpdateTime, data.DeleteTime)
 	}, suSubjectCodeKey)
 	return ret, err
 }
@@ -106,11 +122,52 @@ func (m *defaultSuSubjectModel) FindOneByCode(code string) (*SuSubject, error) {
 	}
 }
 
+// 倒叙
+func (m *defaultSuSubjectModel) FindOneUserAll(userId int64, Current int64, PageSize int64) (*[]SuSubject, error) {
+
+	if Current < 1 {
+		Current = 1
+	}
+	if PageSize < 1 {
+		PageSize = 20
+	}
+	query := fmt.Sprintf("select %s from %s where `main_teacher_id` = ? and `delete_time` is null order by id desc limit ?, ? ", suSubjectRows, m.table)
+	var resp []SuSubject
+	err := m.QueryRowsNoCache(&resp, query, userId, (Current-1)*PageSize, PageSize)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+
+}
+
+func (m *defaultSuSubjectModel) Count(userId int64, ) (int64, error) {
+	query := fmt.Sprintf("select count(*) as count from %s where `main_teacher_id` = ? and `delete_time` is null", m.table)
+
+	var count int64
+	err := m.QueryRowNoCache(&count, query, userId)
+
+	switch err {
+	case nil:
+		return count, nil
+	case sqlc.ErrNotFound:
+		return 0, ErrNotFound
+	default:
+		return 0, err
+	}
+}
+
 func (m *defaultSuSubjectModel) Update(data SuSubject) error {
 	suSubjectIdKey := fmt.Sprintf("%s%v", cacheSuSubjectIdPrefix, data.Id)
 	_, err := m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, suSubjectRowsWithPlaceHolder)
-		return conn.Exec(query, data.Uuid, data.Name, data.Status, data.Code, data.MaxPersion, data.MainTeacherId, data.AssistantTeacherId, data.Introduce, data.Backup, data.DeleteTime, data.Id)
+		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, usSubjectRowsForUpdate)
+		data.UpdateTime.Time = time.Now()
+		data.UpdateTime.Valid = true
+		return conn.Exec(query, data.Uuid, data.Name, data.Status, data.Code, data.MaxPersion, data.MainTeacherId, data.AssistantTeacherId, data.Introduce, data.Backup, data.UpdateTime, data.DeleteTime, data.Id)
 	}, suSubjectIdKey)
 	return err
 }
@@ -128,6 +185,33 @@ func (m *defaultSuSubjectModel) Delete(id int64) error {
 		return conn.Exec(query, id)
 	}, suSubjectIdKey, suSubjectCodeKey)
 	return err
+}
+
+func (m *defaultSuSubjectModel) DeleteSoft(id int64) error {
+	data, err := m.FindOne(id)
+	if err != nil {
+		return err
+	}
+
+	suSubjectIdKey := fmt.Sprintf("%s%v", cacheSuSubjectIdPrefix, id)
+	suSubjectCodeKey := fmt.Sprintf("%s%v", cacheSuSubjectCodePrefix, data.Code)
+	_, err = m.Exec(func(conn sqlx.SqlConn) (result sql.Result, err error) {
+		//query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
+		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, usSubjectRowsForDeleteSoft)
+		currTime := time.Now()
+		return conn.Exec(query, currTime, id)
+	}, suSubjectIdKey, suSubjectCodeKey)
+	return err
+}
+
+func (m *defaultSuSubjectModel) DeleteIdCache(id int64) error {
+	usSubjectIdKey := fmt.Sprintf("%s%v", cacheSuSubjectIdPrefix, id)
+	return m.DelCache(usSubjectIdKey)
+}
+
+func (m *defaultSuSubjectModel) DeleteCodeCache(code string) error {
+	usSubjectCodeKey := fmt.Sprintf("%s%v", cacheSuSubjectCodePrefix, code)
+	return m.DelCache(usSubjectCodeKey)
 }
 
 func (m *defaultSuSubjectModel) formatPrimary(primary interface{}) string {
