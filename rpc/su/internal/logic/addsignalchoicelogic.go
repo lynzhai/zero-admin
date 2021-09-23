@@ -2,10 +2,12 @@ package logic
 
 import (
 	"context"
-	"github.com/globalsign/mgo/bson"
 	"go-zero-admin/rpc/model/papermodel"
 	"go-zero-admin/rpc/su/internal/svc"
 	"go-zero-admin/rpc/su/su"
+	"time"
+
+	"github.com/globalsign/mgo/bson"
 
 	"github.com/tal-tech/go-zero/core/logx"
 )
@@ -28,7 +30,8 @@ func (l *AddSignalChoiceLogic) AddSignalChoice(in *su.AddSignalChoiceReq) (*su.A
 	// todo: add your logic here and delete this line
 
 	signalChoice := papermodel.SignalChoice{
-		ID:            bson.NewObjectId(),
+		Id:            bson.NewObjectId(),
+		Type:          SignalChoiceType,
 		Title:         in.Title,
 		AAnswer:       in.AAnswer,
 		BAnswer:       in.BAnswer,
@@ -38,6 +41,10 @@ func (l *AddSignalChoiceLogic) AddSignalChoice(in *su.AddSignalChoiceReq) (*su.A
 		FAnswer:       in.FAnswer,
 		CorrectAnswer: in.CorrectAnswer,
 		Version:       in.Version,
+		CreateTime:    time.Time{},
+		UpdateTime:    time.Time{},
+		Deleted:       false,
+		DeleteTime:    time.Time{},
 	}
 
 	err := l.svcCtx.SignalChoiceModel.Insert(l.ctx, &signalChoice)
@@ -47,7 +54,8 @@ func (l *AddSignalChoiceLogic) AddSignalChoice(in *su.AddSignalChoiceReq) (*su.A
 	}
 
 	info := su.SignalChoiceInfo{
-		Id:            signalChoice.ID.Hex(),
+		Id:            signalChoice.Id.Hex(),
+		Type:          signalChoice.Type,
 		Title:         signalChoice.Title,
 		AAnswer:       signalChoice.AAnswer,
 		BAnswer:       signalChoice.BAnswer,

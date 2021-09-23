@@ -1,6 +1,8 @@
 syntax = "proto3";
 
+
 package su;
+
 
 message SubjectInfo {
   int64        Id = 1;
@@ -156,14 +158,16 @@ message PersionInfo {
   string       Gender = 7;
   string       Name = 8;
   int64        RoleId = 9;
-  string       RoleType = 10;
-  int64        State = 11;
+  int64        RoleTypeId = 10;
+  string       RoleType = 11;
   string       CreateTime = 12;
   string       UpdateTime = 13;
-  string       Class = 14;
+  string       ClassName = 14;
   string       Academy = 15;
   string       School = 16;
   string       Grade = 17;
+  int64        State = 18;
+  string       SecretCode = 19;
 }
 
 message FindStudentsInSubjectReq{
@@ -214,7 +218,26 @@ message DeleteStudentInSubjectResp{
 
 message SignalChoiceInfo{
   string Id = 1;
-  string Title = 2;
+  string Type = 2;
+  string Title = 3;
+  string AAnswer = 4;
+  string BAnswer = 5;
+  string CAnswer = 6;
+  string DAnswer = 7;
+  string EAnswer = 8;
+  string FAnswer = 9;
+  string CorrectAnswer = 10;
+  string Version = 11;
+  string CreateTime = 12;
+  string UpdateTime = 13;
+  bool   Deleted = 14;
+  string deleteTime = 15;
+}
+
+message AddSignalChoiceReq{
+
+  string Title = 1;
+  string Type = 2;
   string AAnswer = 3;
   string BAnswer = 4;
   string CAnswer = 5;
@@ -223,21 +246,7 @@ message SignalChoiceInfo{
   string FAnswer = 8;
   string CorrectAnswer = 9;
   string Version = 10;
-  string CreateTime = 11;
-  string UpdateTime = 12;
-  string deleteTime = 13;
-}
 
-message AddSignalChoiceReq{
-  string Title = 1;
-  string AAnswer = 2;
-  string BAnswer = 3;
-  string CAnswer = 4;
-  string DAnswer = 5;
-  string EAnswer = 6;
-  string FAnswer = 7;
-  string CorrectAnswer = 8;
-  string Version = 9;
 }
 
 message AddSignalChoiceResp{
@@ -247,15 +256,16 @@ message AddSignalChoiceResp{
 
 message UpdateSignalChoiceReq{
   string Id = 1;
-  string Title = 2;
-  string AAnswer = 3;
-  string BAnswer = 4;
-  string CAnswer = 5;
-  string DAnswer = 6;
-  string EAnswer = 7;
-  string FAnswer = 8;
-  string CorrectAnswer = 9;
-  string Version = 10;
+  string Type = 2;
+  string Title = 3;
+  string AAnswer = 4;
+  string BAnswer = 5;
+  string CAnswer = 6;
+  string DAnswer = 7;
+  string EAnswer = 8;
+  string FAnswer = 9;
+  string CorrectAnswer = 10;
+  string Version = 11;
 }
 
 message UpdateSignalChoiceResp{
@@ -276,7 +286,123 @@ message FindSignalChoiceReq{
 }
 
 message FindSignalChoiceResp{
-    SignalChoiceInfo SignalChoice = 1;
+  SignalChoiceInfo SignalChoice = 1;
+}
+
+
+// AddSelfPaper 时，any 选择题返回的结构体
+message SubjectNumberAndIdPair{
+  int64  SubjectNumber = 1;
+  string SubjectId = 2;
+  string Type = 3;
+}
+
+
+// FindSelfPaper 时，any 选择题返回的结构体
+message SignalChoiceWithSerial{
+  int64  SubjectNumber = 1;
+  string Type = 2;
+  SignalChoiceInfo SignalChoice = 3;
+}
+
+
+
+message ParagraphInstruction{
+  string  Instruction = 1;
+  string  Type = 2;
+}
+
+message PageBar{
+  string  Instruction = 1;
+  int64   CurrentPage = 2;
+  int64   TotalPage = 3;
+  string  Type = 4;
+}
+
+message RandomSetting  {
+  int64 StartNumber  = 1;
+  int64 EndNumber = 2;
+  int64 SubjectCount = 3;
+}
+//message BigSubjectAny {
+//  string TypeUrl = 1;
+//  bytes Value = 2;
+//}
+
+message PaperItem{
+  string type = 1;
+  PageBar PageBar = 2;
+  ParagraphInstruction ParagraphInstruction = 3;
+  SubjectNumberAndIdPair SubjectNumberAndIdPair = 4;
+  SignalChoiceWithSerial SignalChoiceWithSerial = 5;
+}
+
+message SelfPaperInfo{
+  string Id = 1;
+  string PaperName = 2;
+  int64  CreaterId = 3;
+  int64  Status = 4;
+  string StartTime = 5;
+  string StopTime = 6;
+  string Version = 7;
+  string CreateTime = 8;
+  string UpdateTime = 9;
+  string DeleteTime = 10;
+  bool  Deleted = 11;
+  repeated PaperItem PaperItems = 12;
+  repeated RandomSetting RandomSettings = 13;
+  //SignalChoiceBig SignalChoiceBig = 11;
+}
+
+
+message AddSelfPaperReq{
+  string Id = 1;
+  string PaperName = 2;
+  int64  CreaterId = 3;
+  int64  Status = 4;
+  string StartTime = 5;
+  string StopTime = 6;
+  string Version = 7;
+  repeated PaperItem PaperItems = 8;
+  repeated RandomSetting RandomSettings = 9;
+}
+
+message  AddSelfPaperResp{
+  bool Result = 1;
+  string Id = 2;
+}
+
+
+message UpdateSelfPaperReq{
+  string   Id = 1;
+  string   PaperName = 2;
+  int64    CreaterId = 3;
+  int64    Status = 4;
+  string   StartTime = 5;
+  string   StopTime = 6;
+  string   Version = 7;
+  repeated PaperItem PaperItems = 8;
+  repeated RandomSetting RandomSettings = 9;
+}
+
+message  UpdateSelfPaperResp{
+  bool Result = 1;
+}
+
+message DeleteSelfPaperReq{
+  string Id = 1;
+}
+
+message  DeleteSelfPaperResp{
+  bool Result = 1;
+}
+
+message FindSelfPaperReq{
+  string Id = 1;
+}
+
+message  FindSelfPaperResp{
+  SelfPaperInfo SelfPaper = 1;
 }
 
 service Su {
@@ -309,4 +435,10 @@ service Su {
   rpc DeleteSignalChoice(DeleteSignalChoiceReq) returns(DeleteSignalChoiceResp);
   rpc FindSignalChoice(FindSignalChoiceReq) returns(FindSignalChoiceResp);
 
+  rpc AddSelfPaper(AddSelfPaperReq) returns(AddSelfPaperResp);
+  rpc UpdateSelfPaper(UpdateSelfPaperReq) returns(UpdateSelfPaperResp);
+  rpc DeleteSelfPaper(DeleteSelfPaperReq) returns(DeleteSelfPaperResp);
+  rpc FindSelfPaper(FindSelfPaperReq) returns(FindSelfPaperResp);
+
 }
+

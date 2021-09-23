@@ -35,14 +35,14 @@ func (l *AllRolesLogic) AllRoles(in *us.AllRoleReq) (*us.AllRoleResp, error) {
 		count = len(*lastAll)
 	} else {
 		all, err = l.svcCtx.UsRolesModel.FindAll(0, 20)
-		if err != nil{
+		if err != nil {
 			logx.Errorf("UsRolesModel find all error:" + err.Error())
 			return &us.AllRoleResp{
 				Total: int64(count),
 				List:  nil,
 			}, errorRoleUnRegister
 		}
-		logx.Info("find all size:"+ strconv.Itoa(len(*all)))
+		logx.Info("find all size:" + strconv.Itoa(len(*all)))
 		lastAll = all
 		tempCount, _ := l.svcCtx.UsRolesModel.Count()
 		count = int(tempCount)
@@ -58,9 +58,9 @@ func (l *AllRolesLogic) AllRoles(in *us.AllRoleReq) (*us.AllRoleResp, error) {
 	var list []*us.RoleData
 	for _, item := range *lastAll {
 		list = append(list, &us.RoleData{
-			Id:       item.Id,
-			RoleName: item.RoleName.String,
-			Remark:   item.Remark.String,
+			Id:         item.Id,
+			RoleName:   item.RoleName.String,
+			Remark:     item.Remark.String,
 			CreateTime: item.CreateTime.Time.String(),
 			UpdateTime: item.UpdateTime.Time.String(),
 		})

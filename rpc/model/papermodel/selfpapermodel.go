@@ -2,6 +2,7 @@ package papermodel
 
 import (
 	"context"
+	"time"
 
 	"github.com/globalsign/mgo/bson"
 	cachec "github.com/tal-tech/go-zero/core/stores/cache"
@@ -29,9 +30,12 @@ func NewSelfPaperModel(url, collection string, c cachec.CacheConf) SelfPaperMode
 }
 
 func (m *defaultSelfPaperModel) Insert(ctx context.Context, data *SelfPaper) error {
-	if !data.ID.Valid() {
-		data.ID = bson.NewObjectId()
+	if !data.Id.Valid() {
+		data.Id = bson.NewObjectId()
 	}
+
+	data.CreateTime = time.Now()
+	data.UpdateTime = time.Now()
 
 	session, err := m.TakeSession()
 	if err != nil {
@@ -73,9 +77,27 @@ func (m *defaultSelfPaperModel) Update(ctx context.Context, data *SelfPaper) err
 		return err
 	}
 
+	data.UpdateTime = time.Now()
+
 	defer m.PutSession(session)
-	key := prefixSelfPaperCacheKey + data.ID.Hex()
-	return m.GetCollection(session).UpdateId(data.ID, data, key)
+	key := prefixSelfPaperCacheKey + data.Id.Hex()
+
+	bytes, err := bson.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	//不更新 create time
+	mmap := bson.M{}
+	err = bson.Unmarshal(bytes, mmap)
+	if err != nil {
+		return err
+	}
+	delete(mmap, "createTime")
+
+	updateMap := bson.M{"$set":mmap}
+
+	return m.GetCollection(session).UpdateId(data.Id, updateMap, key)
 }
 
 func (m *defaultSelfPaperModel) Delete(ctx context.Context, id string) error {
@@ -95,10 +117,12 @@ func (m *defaultSelfPaperModel) DeleteSoft(ctx context.Context, id string) error
 		return err
 	}
 	hexId := bson.ObjectIdHex(id)
+
 	defer m.PutSession(session)
 	key := prefixSignalChoiceCacheKey + hexId.Hex()
 	return m.GetCollection(session).Update(bson.M{"_id": hexId},
 		bson.M{"$set": bson.M{
-			"deleted": true,
+			"deleted":    true,
+			"deleteTime": time.Now(),
 		}}, key)
 }

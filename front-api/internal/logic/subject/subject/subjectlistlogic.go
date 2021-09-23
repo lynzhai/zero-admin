@@ -33,7 +33,6 @@ func (l *SubjectListLogic) SubjectList(req types.MainTeacherSubjectListReq) (*ty
 		return nil, err
 	}
 
-
 	resp, err := l.svcCtx.Su.SubjectList(l.ctx, &suclient.MainTeacherSubjectListReq{
 		Id:       req.Id,
 		Offset:   req.Offset,

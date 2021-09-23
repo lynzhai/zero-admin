@@ -33,8 +33,8 @@ type (
 		FindOne(id int64) (*SuSubjectLearn, error)
 		FindOneUserAllSubject(userId int64, Current int64, PageSize int64) (*[]SuSubjectLearn, error)
 		FindOneSubjectAllUser(subjectId int64, Current int64, PageSize int64) (*[]SuSubjectLearn, error)
-		OneUserSubjectCount(userId int64, ) (int64, error)
-		OneSubjectUserCount(subjectId int64, ) (int64, error)
+		OneUserSubjectCount(userId int64) (int64, error)
+		OneSubjectUserCount(subjectId int64) (int64, error)
 		Update(data SuSubjectLearn) error
 		Delete(id int64) error
 		DeleteBySubjectAndUserId(UserId, SubjectId int64) error
@@ -123,7 +123,7 @@ func (m *defaultSuSubjectLearnModel) FindOneSubjectAllUser(subjectId int64, Curr
 	}
 }
 
-func (m *defaultSuSubjectLearnModel) OneUserSubjectCount(userId int64, ) (int64, error) {
+func (m *defaultSuSubjectLearnModel) OneUserSubjectCount(userId int64) (int64, error) {
 	query := fmt.Sprintf("select count(*) as count from %s where `user_id` = ?", m.table)
 
 	var count int64
@@ -138,7 +138,7 @@ func (m *defaultSuSubjectLearnModel) OneUserSubjectCount(userId int64, ) (int64,
 		return 0, err
 	}
 }
-func (m *defaultSuSubjectLearnModel) OneSubjectUserCount(subjectId int64, ) (int64, error) {
+func (m *defaultSuSubjectLearnModel) OneSubjectUserCount(subjectId int64) (int64, error) {
 	query := fmt.Sprintf("select count(*) as count from %s where `subject_id` = ?", m.table)
 
 	var count int64

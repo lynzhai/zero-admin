@@ -70,7 +70,7 @@ func (l *PersionUpdateLogic) PersionUpdate(in *us.PersionUpdateReq) (*us.Persion
 			Valid: true,
 		},
 	})
-	if err != nil{
+	if err != nil {
 		return &us.PersionUpdateResp{
 			Result: false,
 		}, err

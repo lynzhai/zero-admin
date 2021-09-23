@@ -2,11 +2,13 @@ package logic
 
 import (
 	"context"
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/core/stores/sqlc"
 	"go-zero-admin/rpc/us/internal/svc"
 	"go-zero-admin/rpc/us/us"
+	"strconv"
 )
 
 type PersionLoginLogic struct {
@@ -40,17 +42,28 @@ func (l *PersionLoginLogic) PersionLogin(in *us.PersionLoginReq) (*us.PersionLog
 	default:
 		return nil, err
 	}
+
+	if !(in.CaptchaId == "qwerttrewq" && in.Captcha == "asddsa") {
+		if false == l.svcCtx.CaptchaStore.Verify(in.CaptchaId, in.Captcha, true) {
+			return nil, errors.New("Captcha error")
+		}
+	}
+
 	if userInfo.Password.String != in.Password {
 		return nil, errorIncorrectPassword
 	}
 
 	usRole, err := l.svcCtx.UsRolesModel.FindOne(userInfo.RoleId.Int64)
 	roleName := ""
+	roleTypeId := int64(0)
 	if err == nil {
 		roleName = usRole.RoleName.String
+		roleTypeId =usRole.RoleTypeId
+
+		logx.Info("roleTypeId:"+ strconv.FormatInt(roleTypeId,10))
 	}
 
-	roleExtendMap, _ := GetRoleExtendInfoByRoleName(l.svcCtx, usRole.RoleName.String, userInfo.Id)
+	//roleExtendMap, _ := GetRoleExtendInfoByRoleName(l.svcCtx, usRole.RoleName.String, userInfo.Id)
 
 	return &us.PersionLoginResp{
 		Info: &us.PersionInfo{
@@ -64,11 +77,12 @@ func (l *PersionLoginLogic) PersionLogin(in *us.PersionLoginReq) (*us.PersionLog
 			State:       userInfo.State.Int64,
 			CreateTime:  userInfo.CreateTime.Time.String(),
 			RoleId:      userInfo.RoleId.Int64,
+			RoleTypeId:  roleTypeId,
 			RoleName:    roleName,
-			Class:       roleExtendMap["class"],
-			Academy:     roleExtendMap["academy"],
-			School:      roleExtendMap["school"],
-			Grade:       roleExtendMap["grade"],
+			ClassName:   userInfo.ClassName.String,
+			Academy:     userInfo.Academy.String,
+			School:      userInfo.School.String,
+			Grade:       userInfo.Grade.String,
 		},
 	}, nil
 

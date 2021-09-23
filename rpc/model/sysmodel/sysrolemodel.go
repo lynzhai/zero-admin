@@ -81,7 +81,7 @@ func (m *SysRoleModel) FindAll(Current int64, PageSize int64, Name string) (*[]S
 	//
 	//fmt.Println("SysRoleModel FindAll4444443")
 
-	fmt.Println("SysRoleModel FindAll Name:" +Name)
+	fmt.Println("SysRoleModel FindAll Name:" + Name)
 
 	query := fmt.Sprintf("select %s from %s limit ?,?", sysRoleRows, m.table)
 	var resp []SysRole

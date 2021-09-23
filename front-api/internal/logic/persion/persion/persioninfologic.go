@@ -2,12 +2,11 @@ package logic
 
 import (
 	"context"
-	"go-zero-admin/rpc/us/usclient"
-
+	"encoding/json"
+	"github.com/tal-tech/go-zero/core/logx"
 	"go-zero-admin/front-api/internal/svc"
 	"go-zero-admin/front-api/internal/types"
-
-	"github.com/tal-tech/go-zero/core/logx"
+	"go-zero-admin/rpc/us/usclient"
 )
 
 type PersionInfoLogic struct {
@@ -27,8 +26,17 @@ func NewPersionInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) Persio
 func (l *PersionInfoLogic) PersionInfo(req types.PersionInfoReq) (*types.PersionInfoResp, error) {
 	// todo: add your logic here and delete this line
 
+	value, err := l.ctx.Value("userId").(json.Number).Int64()
+	if err != nil {
+		return nil, err
+	}
+
+	//logx.Infof("value: %v",value)
+	//logx.Info("value type:" +reflect.TypeOf(value).String())
+
+
 	resp, err := l.svcCtx.Us.PersionInfo(l.ctx, &usclient.PersionInfoReq{
-		Id: req.Id,
+		Id: value,
 	})
 
 	if err != nil {
@@ -45,7 +53,12 @@ func (l *PersionInfoLogic) PersionInfo(req types.PersionInfoReq) (*types.Persion
 			Email:       resp.Info.Email,
 			RoleName:    resp.Info.RoleName,
 			RoleId:      resp.Info.RoleId,
+			RoleTypeId:  resp.Info.RoleTypeId,
 			Gender:      resp.Info.Gender,
+			ClassName:   resp.Info.ClassName,
+			Academy:     resp.Info.Academy,
+			School:      resp.Info.School,
+			Grade:       resp.Info.Grade,
 		},
 	}, nil
 

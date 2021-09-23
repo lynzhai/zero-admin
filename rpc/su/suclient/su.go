@@ -14,48 +14,63 @@ import (
 )
 
 type (
-	SubjectFindResp                     = su.SubjectFindResp
-	SubjectLearnDeleteReq               = su.SubjectLearnDeleteReq
-	SubjectLearnFindResp                = su.SubjectLearnFindResp
-	FindStudentsInSubjectReq            = su.FindStudentsInSubjectReq
-	SubjectAddResp                      = su.SubjectAddResp
-	SubjectAddReq                       = su.SubjectAddReq
-	SubjectDeleteReq                    = su.SubjectDeleteReq
-	FindSubjectByStudentResp            = su.FindSubjectByStudentResp
-	UpdateSignalChoiceReq               = su.UpdateSignalChoiceReq
-	SubjectInfo                         = su.SubjectInfo
-	SubjectUpdateResp                   = su.SubjectUpdateResp
-	SubjectFindReq                      = su.SubjectFindReq
-	SubjectLearnInfo                    = su.SubjectLearnInfo
-	FindSubjectByStudentReq             = su.FindSubjectByStudentReq
-	AddSignalChoiceResp                 = su.AddSignalChoiceResp
-	MainTeacherSubjectListReq           = su.MainTeacherSubjectListReq
-	SignalChoiceInfo                    = su.SignalChoiceInfo
-	SubjectLearnUpdateReq               = su.SubjectLearnUpdateReq
-	AddStudentToSubjectResp             = su.AddStudentToSubjectResp
-	UpdateSignalChoiceResp              = su.UpdateSignalChoiceResp
-	SubjectLearnFindListByUserIdReq     = su.SubjectLearnFindListByUserIdReq
-	SubjectLearnUpdateResp              = su.SubjectLearnUpdateResp
-	SubjectLearnFindListBySubjectIdReq  = su.SubjectLearnFindListBySubjectIdReq
-	SubjectLearnFindListBySubjectIdResp = su.SubjectLearnFindListBySubjectIdResp
-	FindStudentsInSubjectResp           = su.FindStudentsInSubjectResp
-	AddSignalChoiceReq                  = su.AddSignalChoiceReq
-	DeleteSignalChoiceResp              = su.DeleteSignalChoiceResp
+	FindSelfPaperResp                   = su.FindSelfPaperResp
 	SubjectLearnAddResp                 = su.SubjectLearnAddResp
-	SubjectUpdateReq                    = su.SubjectUpdateReq
-	SubjectDeleteResp                   = su.SubjectDeleteResp
-	SubjectLearnAddReq                  = su.SubjectLearnAddReq
-	SubjectLearnFindReq                 = su.SubjectLearnFindReq
-	PersionInfo                         = su.PersionInfo
-	AddStudentToSubjectReq              = su.AddStudentToSubjectReq
 	DeleteSignalChoiceReq               = su.DeleteSignalChoiceReq
-	MainTeacherSubjectListReap          = su.MainTeacherSubjectListReap
+	AddSelfPaperResp                    = su.AddSelfPaperResp
+	SignalChoiceInfo                    = su.SignalChoiceInfo
+	AddSignalChoiceResp                 = su.AddSignalChoiceResp
+	UpdateSignalChoiceReq               = su.UpdateSignalChoiceReq
 	FindSignalChoiceReq                 = su.FindSignalChoiceReq
-	SubjectLearnFindListByUserIdResp    = su.SubjectLearnFindListByUserIdResp
+	PaperItem                           = su.PaperItem
+	SubjectUpdateResp                   = su.SubjectUpdateResp
 	DeleteStudentInSubjectReq           = su.DeleteStudentInSubjectReq
-	DeleteStudentInSubjectResp          = su.DeleteStudentInSubjectResp
+	DeleteSelfPaperReq                  = su.DeleteSelfPaperReq
+	SubjectLearnFindResp                = su.SubjectLearnFindResp
+	SubjectLearnFindListBySubjectIdResp = su.SubjectLearnFindListBySubjectIdResp
+	ParagraphInstruction                = su.ParagraphInstruction
+	MainTeacherSubjectListReap          = su.MainTeacherSubjectListReap
+	SelfPaperInfo                       = su.SelfPaperInfo
+	SubjectLearnAddReq                  = su.SubjectLearnAddReq
+	DeleteSignalChoiceResp              = su.DeleteSignalChoiceResp
 	FindSignalChoiceResp                = su.FindSignalChoiceResp
+	FindSubjectByStudentReq             = su.FindSubjectByStudentReq
+	DeleteStudentInSubjectResp          = su.DeleteStudentInSubjectResp
+	UpdateSelfPaperReq                  = su.UpdateSelfPaperReq
+	SubjectAddResp                      = su.SubjectAddResp
+	SubjectDeleteReq                    = su.SubjectDeleteReq
+	SubjectLearnFindListByUserIdResp    = su.SubjectLearnFindListByUserIdResp
+	SubjectNumberAndIdPair              = su.SubjectNumberAndIdPair
+	PageBar                             = su.PageBar
+	AddSelfPaperReq                     = su.AddSelfPaperReq
+	SubjectDeleteResp                   = su.SubjectDeleteResp
+	SubjectFindReq                      = su.SubjectFindReq
+	AddStudentToSubjectResp             = su.AddStudentToSubjectResp
+	SubjectLearnFindListByUserIdReq     = su.SubjectLearnFindListByUserIdReq
+	FindStudentsInSubjectResp           = su.FindStudentsInSubjectResp
+	UpdateSelfPaperResp                 = su.UpdateSelfPaperResp
+	FindSelfPaperReq                    = su.FindSelfPaperReq
+	SubjectAddReq                       = su.SubjectAddReq
+	SubjectLearnUpdateReq               = su.SubjectLearnUpdateReq
+	SubjectLearnUpdateResp              = su.SubjectLearnUpdateResp
+	SubjectLearnDeleteReq               = su.SubjectLearnDeleteReq
 	SubjectLearnDeleteResp              = su.SubjectLearnDeleteResp
+	PersionInfo                         = su.PersionInfo
+	SubjectLearnInfo                    = su.SubjectLearnInfo
+	FindSubjectByStudentResp            = su.FindSubjectByStudentResp
+	SignalChoiceWithSerial              = su.SignalChoiceWithSerial
+	AddStudentToSubjectReq              = su.AddStudentToSubjectReq
+	UpdateSignalChoiceResp              = su.UpdateSignalChoiceResp
+	RandomSetting                       = su.RandomSetting
+	DeleteSelfPaperResp                 = su.DeleteSelfPaperResp
+	MainTeacherSubjectListReq           = su.MainTeacherSubjectListReq
+	SubjectUpdateReq                    = su.SubjectUpdateReq
+	SubjectLearnFindListBySubjectIdReq  = su.SubjectLearnFindListBySubjectIdReq
+	FindStudentsInSubjectReq            = su.FindStudentsInSubjectReq
+	AddSignalChoiceReq                  = su.AddSignalChoiceReq
+	SubjectInfo                         = su.SubjectInfo
+	SubjectFindResp                     = su.SubjectFindResp
+	SubjectLearnFindReq                 = su.SubjectLearnFindReq
 
 	Su interface {
 		SubjectAdd(ctx context.Context, in *SubjectAddReq) (*SubjectAddResp, error)
@@ -82,6 +97,10 @@ type (
 		UpdateSignalChoice(ctx context.Context, in *UpdateSignalChoiceReq) (*UpdateSignalChoiceResp, error)
 		DeleteSignalChoice(ctx context.Context, in *DeleteSignalChoiceReq) (*DeleteSignalChoiceResp, error)
 		FindSignalChoice(ctx context.Context, in *FindSignalChoiceReq) (*FindSignalChoiceResp, error)
+		AddSelfPaper(ctx context.Context, in *AddSelfPaperReq) (*AddSelfPaperResp, error)
+		UpdateSelfPaper(ctx context.Context, in *UpdateSelfPaperReq) (*UpdateSelfPaperResp, error)
+		DeleteSelfPaper(ctx context.Context, in *DeleteSelfPaperReq) (*DeleteSelfPaperResp, error)
+		FindSelfPaper(ctx context.Context, in *FindSelfPaperReq) (*FindSelfPaperResp, error)
 	}
 
 	defaultSu struct {
@@ -193,4 +212,24 @@ func (m *defaultSu) DeleteSignalChoice(ctx context.Context, in *DeleteSignalChoi
 func (m *defaultSu) FindSignalChoice(ctx context.Context, in *FindSignalChoiceReq) (*FindSignalChoiceResp, error) {
 	client := su.NewSuClient(m.cli.Conn())
 	return client.FindSignalChoice(ctx, in)
+}
+
+func (m *defaultSu) AddSelfPaper(ctx context.Context, in *AddSelfPaperReq) (*AddSelfPaperResp, error) {
+	client := su.NewSuClient(m.cli.Conn())
+	return client.AddSelfPaper(ctx, in)
+}
+
+func (m *defaultSu) UpdateSelfPaper(ctx context.Context, in *UpdateSelfPaperReq) (*UpdateSelfPaperResp, error) {
+	client := su.NewSuClient(m.cli.Conn())
+	return client.UpdateSelfPaper(ctx, in)
+}
+
+func (m *defaultSu) DeleteSelfPaper(ctx context.Context, in *DeleteSelfPaperReq) (*DeleteSelfPaperResp, error) {
+	client := su.NewSuClient(m.cli.Conn())
+	return client.DeleteSelfPaper(ctx, in)
+}
+
+func (m *defaultSu) FindSelfPaper(ctx context.Context, in *FindSelfPaperReq) (*FindSelfPaperResp, error) {
+	client := su.NewSuClient(m.cli.Conn())
+	return client.FindSelfPaper(ctx, in)
 }

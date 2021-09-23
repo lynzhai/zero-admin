@@ -42,6 +42,7 @@ func (l *FindSignalChoiceLogic) FindSignalChoice(req types.FindSignalChoiceReq) 
 		Data: types.SignalChoiceInfo{
 			Id:            resp.SignalChoice.Id,
 			Title:         resp.SignalChoice.Title,
+			Type:          resp.SignalChoice.Type,
 			AAnswer:       resp.SignalChoice.AAnswer,
 			BAnswer:       resp.SignalChoice.BAnswer,
 			CAnswer:       resp.SignalChoice.CAnswer,

@@ -36,13 +36,19 @@ func (l *PersionInfoLogic) PersionInfo(in *us.PersionInfoReq) (*us.PersionInfoRe
 		return nil, err
 	}
 
+	logx.Infof("usUser %+v",usUser)
+
 	usRole, err := l.svcCtx.UsRolesModel.FindOne(usUser.RoleId.Int64)
 	roleName := ""
+	roleTypeId := int64(0)
 	if err == nil {
 		roleName = usRole.RoleName.String
+		roleTypeId = usRole.RoleTypeId
 	}
 
-	roleExtendMap, _ := GetRoleExtendInfoByRoleName(l.svcCtx, usRole.RoleName.String, usUser.Id)
+	logx.Infof("roleName:",roleName)
+
+	//roleExtendMap, _ := GetRoleExtendInfoByRoleName(l.svcCtx, usRole.RoleName.String, usUser.Id)
 
 	return &us.PersionInfoResp{
 		Info: &us.PersionInfo{
@@ -57,11 +63,12 @@ func (l *PersionInfoLogic) PersionInfo(in *us.PersionInfoReq) (*us.PersionInfoRe
 			CreateTime:  usUser.CreateTime.Time.String(),
 			UpdateTime:  usUser.UpdateTime.Time.String(),
 			RoleId:      usUser.RoleId.Int64,
+			RoleTypeId:  roleTypeId,
 			RoleName:    roleName,
-			Class:       roleExtendMap["class"],
-			Academy:     roleExtendMap["academy"],
-			School:      roleExtendMap["school"],
-			Grade:       roleExtendMap["grade"],
+			ClassName:   usUser.ClassName.String,
+			Academy:     usUser.Academy.String,
+			School:      usUser.School.String,
+			Grade:       usUser.Grade.String,
 		},
 	}, nil
 

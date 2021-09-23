@@ -120,3 +120,23 @@ func (s *SuServer) FindSignalChoice(ctx context.Context, in *su.FindSignalChoice
 	l := logic.NewFindSignalChoiceLogic(ctx, s.svcCtx)
 	return l.FindSignalChoice(in)
 }
+
+func (s *SuServer) AddSelfPaper(ctx context.Context, in *su.AddSelfPaperReq) (*su.AddSelfPaperResp, error) {
+	l := logic.NewAddSelfPaperLogic(ctx, s.svcCtx)
+	return l.AddSelfPaper(in)
+}
+
+func (s *SuServer) UpdateSelfPaper(ctx context.Context, in *su.UpdateSelfPaperReq) (*su.UpdateSelfPaperResp, error) {
+	l := logic.NewUpdateSelfPaperLogic(ctx, s.svcCtx)
+	return l.UpdateSelfPaper(in)
+}
+
+func (s *SuServer) DeleteSelfPaper(ctx context.Context, in *su.DeleteSelfPaperReq) (*su.DeleteSelfPaperResp, error) {
+	l := logic.NewDeleteSelfPaperLogic(ctx, s.svcCtx)
+	return l.DeleteSelfPaper(in)
+}
+
+func (s *SuServer) FindSelfPaper(ctx context.Context, in *su.FindSelfPaperReq) (*su.FindSelfPaperResp, error) {
+	l := logic.NewFindSelfPaperLogic(ctx, s.svcCtx)
+	return l.FindSelfPaper(in)
+}

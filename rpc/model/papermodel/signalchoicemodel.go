@@ -30,8 +30,8 @@ func NewSignalChoiceModel(url, collection string, c cachec.CacheConf) SignalChoi
 }
 
 func (m *defaultSignalChoiceModel) Insert(ctx context.Context, data *SignalChoice) error {
-	if !data.ID.Valid() {
-		data.ID = bson.NewObjectId()
+	if !data.Id.Valid() {
+		data.Id = bson.NewObjectId()
 	}
 
 	createTime := time.Now()
@@ -80,8 +80,8 @@ func (m *defaultSignalChoiceModel) Update(ctx context.Context, data *SignalChoic
 	}
 
 	defer m.PutSession(session)
-	key := prefixSignalChoiceCacheKey + data.ID.Hex()
-	return m.GetCollection(session).UpdateId(data.ID, data, key)
+	key := prefixSignalChoiceCacheKey + data.Id.Hex()
+	return m.GetCollection(session).UpdateId(data.Id, data, key)
 }
 
 func (m *defaultSignalChoiceModel) Delete(ctx context.Context, id string) error {
@@ -105,7 +105,8 @@ func (m *defaultSignalChoiceModel) DeleteSoft(ctx context.Context, id string) er
 	key := prefixSignalChoiceCacheKey + hexId.Hex()
 	return m.GetCollection(session).Update(bson.M{"_id": hexId},
 		bson.M{"$set": bson.M{
-			"deleted": true,
+			"deleted":     true,
+			"deleteTime": time.Now(),
 		}}, key)
 
 }

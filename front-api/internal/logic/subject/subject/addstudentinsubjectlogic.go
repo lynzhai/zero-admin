@@ -27,19 +27,19 @@ func NewAddStudentInSubjectLogic(ctx context.Context, svcCtx *svc.ServiceContext
 func (l *AddStudentInSubjectLogic) AddStudentInSubject(req types.AddStudentInSubjectReq) (*types.AddStudentInSubjectResp, error) {
 	// todo: add your logic here and delete this line
 
-	resp,err := l.svcCtx.Su.AddStudentToSubject(l.ctx,&suclient.AddStudentToSubjectReq{
+	resp, err := l.svcCtx.Su.AddStudentToSubject(l.ctx, &suclient.AddStudentToSubjectReq{
 		UserId:    req.UserId,
 		SubjectId: req.SubejctId,
 	})
 
-	if err != nil{
-		return &types.AddStudentInSubjectResp{},err
+	if err != nil {
+		return &types.AddStudentInSubjectResp{}, err
 	}
 
 	return &types.AddStudentInSubjectResp{
 		Code:    0,
 		Message: "success",
-		Data:    types.AddStudentInSubjectRespData{
+		Data: types.AddStudentInSubjectRespData{
 			Result: resp.Result,
 		},
 	}, nil

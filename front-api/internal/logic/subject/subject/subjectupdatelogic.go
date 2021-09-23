@@ -33,7 +33,6 @@ func (l *SubjectUpdateLogic) SubjectUpdate(req types.SubjectUpdateReq) (*types.S
 		return nil, err
 	}
 
-
 	resp, err := l.svcCtx.Su.SubjectUpdate(l.ctx, &suclient.SubjectUpdateReq{
 		Id:                 req.Id,
 		Uuid:               req.Uuid,

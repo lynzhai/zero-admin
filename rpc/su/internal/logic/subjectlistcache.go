@@ -33,12 +33,12 @@ func SetSubjectTotalNumberCache(userId int64, count int64, r *redis.Redis) error
 	cacheKey := fmt.Sprintf("%s%v", bizSubjectTotalNumberCacheKey, userId)
 	countStr := strconv.FormatInt(count, 10)
 
-	exists ,_ := SubjectTotalNumberCacheExists(userId,r)
-	if err :=  r.Set(cacheKey, countStr);err != nil{
+	exists, _ := SubjectTotalNumberCacheExists(userId, r)
+	if err := r.Set(cacheKey, countStr); err != nil {
 		return err
 	}
-	if !exists{
-		SetSubjectTotalNumberCacheExpire(userId,common.GetCommonRedisExpireSeconds(),r)
+	if !exists {
+		SetSubjectTotalNumberCacheExpire(userId, common.GetCommonRedisExpireSeconds(), r)
 	}
 	return nil
 }
@@ -66,16 +66,6 @@ func SetSubjectTotalNumberCacheExpire(userId int64, seconds int, r *redis.Redis)
 	return r.Expire(cacheKey, seconds)
 }
 
-
-
-
-
-
-
-
-
-
-
 func SubjectRedisCacheExists(userId int64, r *redis.Redis) (bool, error) {
 	cacheKey := fmt.Sprintf("%s%v", bizSubjectCacheKey, userId)
 	return r.Exists(cacheKey)
@@ -83,10 +73,10 @@ func SubjectRedisCacheExists(userId int64, r *redis.Redis) (bool, error) {
 
 func SetSubjectRedisCacheExpire(userId int64, seconds int, r *redis.Redis) error {
 	cacheKey := fmt.Sprintf("%s%v", bizSubjectCacheKey, userId)
-	return  r.Expire(cacheKey, seconds)
+	return r.Expire(cacheKey, seconds)
 }
 
-func GetSubjectRedisCacheLen(userId int64, r *redis.Redis)(val int, err error){
+func GetSubjectRedisCacheLen(userId int64, r *redis.Redis) (val int, err error) {
 	cacheKey := fmt.Sprintf("%s%v", bizSubjectCacheKey, userId)
 	return r.Zcard(cacheKey)
 }
@@ -127,14 +117,14 @@ func AddSubjectId(userId int64, subjectId int64, createTime time.Time, r *redis.
 	return nil
 }
 
-func DelSubjectId(userId int64, subjectId int64, r *redis.Redis, ) error {
+func DelSubjectId(userId int64, subjectId int64, r *redis.Redis) error {
 	cacheKey := fmt.Sprintf("%s%v", bizSubjectCacheKey, userId)
 	s := strconv.FormatInt(subjectId, 10)
 	_, err := r.Zrem(cacheKey, s)
 	return err
 }
 
-func SetSubjectBizCacheExpire(userId int64, seconds int, r *redis.Redis, ) {
+func SetSubjectBizCacheExpire(userId int64, seconds int, r *redis.Redis) {
 	cacheKey := fmt.Sprintf("%s%v", bizSubjectCacheKey, userId)
 	r.Expire(cacheKey, seconds)
 }
@@ -159,7 +149,7 @@ func uncompress(svcCtx *svc.ServiceContext, v string) (*sumodel.SuSubject, error
 // ListByRangeTime提供根据时间段进行数据查询
 func ListSubjectByRangeTime(userId int64, startTime, stopTime time.Time, offset int64, pageSize int64, r *redis.Redis, svcCtx *svc.ServiceContext) ([]*sumodel.SuSubject, error) {
 	cacheKey := fmt.Sprintf("%s%v", bizSubjectCacheKey, userId)
-	kvs, err := r.ZrevrangebyscoreWithScoresAndLimit(cacheKey, startTime.UnixNano()/1e6, stopTime.UnixNano()/1e6, int(offset - 1 ), int(pageSize))
+	kvs, err := r.ZrevrangebyscoreWithScoresAndLimit(cacheKey, startTime.UnixNano()/1e6, stopTime.UnixNano()/1e6, int(offset-1), int(pageSize))
 	if err != nil {
 		return nil, err
 	}

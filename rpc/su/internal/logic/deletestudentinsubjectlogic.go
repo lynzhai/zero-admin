@@ -29,7 +29,7 @@ func (l *DeleteStudentInSubjectLogic) DeleteStudentInSubject(in *su.DeleteStuden
 
 	err := l.svcCtx.SuSubjectLearnModel.DeleteBySubjectAndUserId(in.UserId, in.SubjectId)
 	if err != nil {
-		logx.Errorf("err" +err.Error())
+		logx.Errorf("err" + err.Error())
 		return &su.DeleteStudentInSubjectResp{}, errorDeleteStudentInSubject
 	}
 

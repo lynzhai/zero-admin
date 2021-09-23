@@ -32,6 +32,7 @@ func (l *UpdateSignalChoiceLogic) UpdateSignalChoice(req types.UpdateSignalChoic
 	}
 	resp, err := l.svcCtx.Su.UpdateSignalChoice(l.ctx, &suclient.UpdateSignalChoiceReq{
 		Id:            req.Id,
+		Type:          req.Type,
 		Title:         req.Title,
 		AAnswer:       req.AAnswer,
 		BAnswer:       req.BAnswer,
@@ -52,6 +53,7 @@ func (l *UpdateSignalChoiceLogic) UpdateSignalChoice(req types.UpdateSignalChoic
 		Data: types.SignalChoiceInfo{
 			Id:            resp.SignalChoice.Id,
 			Title:         resp.SignalChoice.Title,
+			Type:          resp.SignalChoice.Type,
 			AAnswer:       resp.SignalChoice.AAnswer,
 			BAnswer:       resp.SignalChoice.BAnswer,
 			CAnswer:       resp.SignalChoice.CAnswer,

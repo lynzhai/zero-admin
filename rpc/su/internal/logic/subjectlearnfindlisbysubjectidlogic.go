@@ -59,6 +59,5 @@ func (l *SubjectLearnFindLisBySubjectIdLogic) SubjectLearnFindLisBySubjectId(in 
 		List:  subjectLearnInfos,
 	}, nil
 
-
 	return &su.SubjectLearnFindListBySubjectIdResp{}, nil
 }

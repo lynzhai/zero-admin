@@ -29,11 +29,13 @@ func (l *AddSignalChoiceLogic) AddSignalChoice(req types.AddSignalChoiceReq) (*t
 
 	err := l.svcCtx.Validate.Struct(&req)
 	if err != nil {
+		logx.Error("err:" + err.Error())
 		return nil, err
 	}
 
 	resp, err := l.svcCtx.Su.AddSignalChoice(l.ctx, &suclient.AddSignalChoiceReq{
 		Title:         req.Title,
+		Type:          req.Type,
 		AAnswer:       req.AAnswer,
 		BAnswer:       req.BAnswer,
 		CAnswer:       req.CAnswer,
@@ -44,6 +46,7 @@ func (l *AddSignalChoiceLogic) AddSignalChoice(req types.AddSignalChoiceReq) (*t
 		Version:       req.Version,
 	})
 	if err != nil {
+		logx.Error("err:" + err.Error())
 		return nil, err
 	}
 
@@ -53,6 +56,7 @@ func (l *AddSignalChoiceLogic) AddSignalChoice(req types.AddSignalChoiceReq) (*t
 		Data: types.SignalChoiceInfo{
 			Id:            resp.SignalChoice.Id,
 			Title:         resp.SignalChoice.Title,
+			Type:          resp.SignalChoice.Type,
 			AAnswer:       resp.SignalChoice.AAnswer,
 			BAnswer:       resp.SignalChoice.BAnswer,
 			CAnswer:       resp.SignalChoice.CAnswer,

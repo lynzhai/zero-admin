@@ -53,6 +53,7 @@ func dbFindSubjectList(userId, offset, pageSize, totalCount int64, svcCtx *svc.S
 		}
 		subjectInfos = append(subjectInfos, &info)
 	}
+
 	return &su.MainTeacherSubjectListReap{
 		Total: totalCount,
 		List:  subjectInfos,
@@ -69,7 +70,9 @@ func bizCacheFindSubjectList(userId, offset, pageSize, totalCount int64, svcCtx 
 			List:  nil,
 		}, errors.New("查询缓存失败")
 	}
+
 	subjectInfos := make([]*su.SubjectInfo, 0)
+
 	for _, v := range subjects {
 		info := su.SubjectInfo{
 			Id:                 v.Id,
@@ -123,8 +126,8 @@ func (l *SubjectListLogic) SubjectList(in *su.MainTeacherSubjectListReq) (*su.Ma
 		}
 		subjectListCacheExists, _ = SubjectRedisCacheExists(in.Id, l.svcCtx.RedisConn)
 	} else {
-		if value,err := GetSubjectRedisCacheLen(in.Id, l.svcCtx.RedisConn);err == nil{
-			logx.Info("value:"+ strconv.Itoa(value))
+		if value, err := GetSubjectRedisCacheLen(in.Id, l.svcCtx.RedisConn); err == nil {
+			logx.Info("value:" + strconv.Itoa(value))
 			realCacheLen = value
 		}
 	}

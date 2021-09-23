@@ -35,7 +35,7 @@ type (
 		FindOne(id int64) (*SuSubject, error)
 		FindOneByCode(code string) (*SuSubject, error)
 		FindOneUserAll(userId int64, Current int64, PageSize int64) (*[]SuSubject, error)
-		Count(userId int64, ) (int64, error)
+		Count(userId int64) (int64, error)
 		Update(data SuSubject) error
 		Delete(id int64) error
 		DeleteSoft(id int64) error
@@ -145,7 +145,7 @@ func (m *defaultSuSubjectModel) FindOneUserAll(userId int64, Current int64, Page
 
 }
 
-func (m *defaultSuSubjectModel) Count(userId int64, ) (int64, error) {
+func (m *defaultSuSubjectModel) Count(userId int64) (int64, error) {
 	query := fmt.Sprintf("select count(*) as count from %s where `main_teacher_id` = ? and `delete_time` is null", m.table)
 
 	var count int64

@@ -33,9 +33,9 @@ func (l *RoleListLogic) RoleList(in *us.RoleListReq) (*us.RoleListResp, error) {
 	count, _ := l.svcCtx.UsRolesModel.Count()
 	for _, item := range *all {
 		list = append(list, &us.RoleData{
-			Id:       item.Id,
-			RoleName: item.RoleName.String,
-			Remark:   item.Remark.String,
+			Id:         item.Id,
+			RoleName:   item.RoleName.String,
+			Remark:     item.Remark.String,
 			CreateTime: item.CreateTime.Time.String(),
 			UpdateTime: item.UpdateTime.Time.String(),
 		})
@@ -46,7 +46,3 @@ func (l *RoleListLogic) RoleList(in *us.RoleListReq) (*us.RoleListResp, error) {
 		List:  list,
 	}, nil
 }
-
-
-
-

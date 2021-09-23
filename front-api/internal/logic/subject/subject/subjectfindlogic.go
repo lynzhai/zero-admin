@@ -33,7 +33,6 @@ func (l *SubjectFindLogic) SubjectFind(req types.SubjectFindReq) (*types.Subject
 		return nil, err
 	}
 
-
 	resp, err := l.svcCtx.Su.SubjectFind(l.ctx, &suclient.SubjectFindReq{
 		SubjectId: req.Id,
 	})

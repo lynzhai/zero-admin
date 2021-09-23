@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"go-zero-admin/rpc/us/usclient"
+	"strconv"
 	"strings"
 	"time"
 
@@ -37,6 +38,8 @@ func (l *PersionLoginLogic) PersionLogin(req types.PersionLoginReq) (*types.Pers
 	resp, err := l.svcCtx.Us.PersionLogin(l.ctx, &usclient.PersionLoginReq{
 		PhoneNumber: req.PhoneNumber,
 		Password:    req.Password,
+		Captcha:     req.Captcha,
+		CaptchaId:   req.CaptchaId,
 	})
 
 	if err != nil {
@@ -59,6 +62,8 @@ func (l *PersionLoginLogic) PersionLogin(req types.PersionLoginReq) (*types.Pers
 	}
 	// ---end---
 
+	logx.Info("resp.Info.RoleTypeId:"+ strconv.FormatInt(resp.Info.RoleTypeId,10))
+
 	return &types.PersionLoginResp{
 		Code:    0,
 		Message: "success",
@@ -68,9 +73,15 @@ func (l *PersionLoginLogic) PersionLogin(req types.PersionLoginReq) (*types.Pers
 				Name:        resp.Info.Name,
 				PhoneNumber: resp.Info.PhoneNumber,
 				Email:       resp.Info.Email,
-				RoleId:      resp.Info.RoleId,
 				RoleName:    resp.Info.RoleName,
+				RoleId:      resp.Info.RoleId,
+				RoleTypeId:  resp.Info.RoleTypeId,
 				Gender:      resp.Info.Gender,
+				ClassName:   resp.Info.ClassName,
+				Academy:     resp.Info.Academy,
+				School:      resp.Info.School,
+				Grade:       resp.Info.Grade,
+				State:       resp.Info.State,
 			},
 			AccessToken:  jwtToken,
 			AccessExpire: now + accessExpire,

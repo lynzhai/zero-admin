@@ -14,33 +14,37 @@ import (
 )
 
 type (
-	PersionAddReq       = us.PersionAddReq
-	PersionInfo         = us.PersionInfo
-	PersionInfoReq      = us.PersionInfoReq
-	PersionRegisterReq  = us.PersionRegisterReq
-	PersionRegisterResp = us.PersionRegisterResp
-	PersionUpdateReq    = us.PersionUpdateReq
-	RoleAddReq          = us.RoleAddReq
-	RoleAddResp         = us.RoleAddResp
-	RoleListResp        = us.RoleListResp
 	RoleUpdateReq       = us.RoleUpdateReq
-	PersionLoginReq     = us.PersionLoginReq
-	PersionInfoResp     = us.PersionInfoResp
-	RoleDeleteResp      = us.RoleDeleteResp
+	PersionLoginResp    = us.PersionLoginResp
 	PersionData         = us.PersionData
+	AllRoleReq          = us.AllRoleReq
+	PersionRegisterResp = us.PersionRegisterResp
+	PersionInfo         = us.PersionInfo
+	EmailCodeReq        = us.EmailCodeReq
+	PersionAddReq       = us.PersionAddReq
+	PersionRegisterReq  = us.PersionRegisterReq
+	RoleListResp        = us.RoleListResp
+	RoleUpdateResp      = us.RoleUpdateResp
+	AllRoleResp         = us.AllRoleResp
+	CaptchaReq          = us.CaptchaReq
+	PersionDeleteReq    = us.PersionDeleteReq
+	RoleListReq         = us.RoleListReq
+	PersionDeleteResp   = us.PersionDeleteResp
+	RoleAddResp         = us.RoleAddResp
+	PersionLoginReq     = us.PersionLoginReq
+	PersionInfoReq      = us.PersionInfoReq
+	EmailCodeResp       = us.EmailCodeResp
+	PersionListReq      = us.PersionListReq
+	PersionListResp     = us.PersionListResp
+	RoleDeleteReq       = us.RoleDeleteReq
+	CaptchaResp         = us.CaptchaResp
 	PersionAddResp      = us.PersionAddResp
 	PersionUpdateResp   = us.PersionUpdateResp
-	RoleListReq         = us.RoleListReq
-	PersionDeleteReq    = us.PersionDeleteReq
-	PersionListResp     = us.PersionListResp
-	PersionDeleteResp   = us.PersionDeleteResp
-	PersionListReq      = us.PersionListReq
 	RoleData            = us.RoleData
-	RoleDeleteReq       = us.RoleDeleteReq
-	PersionLoginResp    = us.PersionLoginResp
-	RoleUpdateResp      = us.RoleUpdateResp
-	AllRoleReq          = us.AllRoleReq
-	AllRoleResp         = us.AllRoleResp
+	RoleDeleteResp      = us.RoleDeleteResp
+	PersionInfoResp     = us.PersionInfoResp
+	PersionUpdateReq    = us.PersionUpdateReq
+	RoleAddReq          = us.RoleAddReq
 
 	Us interface {
 		PersionAdd(ctx context.Context, in *PersionAddReq) (*PersionAddResp, error)
@@ -55,6 +59,8 @@ type (
 		PersionLogin(ctx context.Context, in *PersionLoginReq) (*PersionLoginResp, error)
 		PersionRegister(ctx context.Context, in *PersionRegisterReq) (*PersionRegisterResp, error)
 		PersionInfo(ctx context.Context, in *PersionInfoReq) (*PersionInfoResp, error)
+		Captcha(ctx context.Context, in *CaptchaReq) (*CaptchaResp, error)
+		EmailCode(ctx context.Context, in *EmailCodeReq) (*EmailCodeResp, error)
 	}
 
 	defaultUs struct {
@@ -126,4 +132,14 @@ func (m *defaultUs) PersionRegister(ctx context.Context, in *PersionRegisterReq)
 func (m *defaultUs) PersionInfo(ctx context.Context, in *PersionInfoReq) (*PersionInfoResp, error) {
 	client := us.NewUsClient(m.cli.Conn())
 	return client.PersionInfo(ctx, in)
+}
+
+func (m *defaultUs) Captcha(ctx context.Context, in *CaptchaReq) (*CaptchaResp, error) {
+	client := us.NewUsClient(m.cli.Conn())
+	return client.Captcha(ctx, in)
+}
+
+func (m *defaultUs) EmailCode(ctx context.Context, in *EmailCodeReq) (*EmailCodeResp, error) {
+	client := us.NewUsClient(m.cli.Conn())
+	return client.EmailCode(ctx, in)
 }

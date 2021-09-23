@@ -9,17 +9,19 @@ info(
 
 type(
     PersionRegisterReq struct {
-        PhoneNumber string `json:"phoneNumber"`
-        Password    string `json:"password"`
-        Number      string `json:"number"`
+        PhoneNumber string `json:"phoneNumber" validate:"required,min=11"`
+        Password    string `json:"password" validate:"required,min=6"`
+        Number      string `json:"number,optional"`
         Email       string `json:"email"`
         Gender      string `json:"gender"`
         Name        string `json:"name"`
         RoleId      int64  `json:"roleId"`
-        Class       string    `json:"class,optional"`
+        ClassName   string    `json:"className,optional"`
         Academy     string    `json:"academy,optional"`
         School      string    `json:"school,optional"`
         Grade       string    `json:"grade,optional"`
+        EmailId     string    `json:"emailId"`
+        EmailCode   string    `json:"emailCode"`
     }
     PersionRegisterRespData struct {
         Result       bool `json:"result"`
@@ -31,22 +33,26 @@ type(
     }
 
     PersionInfo struct{
-        Id                int64  `json:"id"`
-        Name              string `json:"name"`
-        PhoneNumber       string `json:"phoneNumber"`
-        Email             string `json:"email"`
-        RoleName          string `json:"roleName"`
-        RoleId            int64  `json:"roleId"`
-        Gender            string `json:"gender"`
-        Class             string    `json:"class"`
+        Id                int64     `json:"id"`
+        Name              string    `json:"name"`
+        PhoneNumber       string    `json:"phoneNumber"`
+        Email             string    `json:"email"`
+        RoleName          string    `json:"roleName"`
+        RoleId            int64     `json:"roleId"`
+        RoleTypeId        int64     `json:"roleTypeId"`
+        Gender            string    `json:"gender"`
+        ClassName         string    `json:"className"`
         Academy           string    `json:"academy"`
         School            string    `json:"school"`
         Grade             string    `json:"grade"`
+        State             int64     `json:"state"`
     }
 
     PersionLoginReq struct {
         Password    string `json:"password"`
         PhoneNumber string `json:"phoneNumber"`
+        Captcha     string `json:"captcha"`   // 验证码
+        CaptchaId   string `json:"captchaId"` // 验证码ID
     }
     PersionLoginRespData struct {
         PersionInfo
@@ -68,13 +74,12 @@ type(
 
 
     PersionInfoReq struct{
-        Id int64 `json:"id"`
     }
 
     PersionInfoResp struct{
-        Code              int64 `json:"code"`
-        Message           string `json:"message"`
-        Data              PersionInfo `json:"data"`
+        Code          int64         `json:"code"`
+        Message       string        `json:"message"`
+        Data          PersionInfo   `json:"data"`
     }
 
 
@@ -82,11 +87,12 @@ type(
 
     }
     RoleData struct{
-       Id int64         `json:"id"`
-       RoleName string  `json:"roleName"`
-       Remark   string  `json:"remark"`
-       CreateTime string  `json:"createTime"`
-       UpdateTime string  `json:"updateTime"`
+       Id           int64                 `json:"id"`
+       RoleTypeId   int64         `json:"roleTypeId"`
+       RoleName     string          `json:"roleName"`
+       Remark       string          `json:"remark"`
+       CreateTime   string        `json:"createTime"`
+       UpdateTime   string        `json:"updateTime"`
     }
 
     AllRoleData{
@@ -98,6 +104,21 @@ type(
         Code        int64       `json:"code"`
         Message     string      `json:"message"`
         Data        AllRoleData `json:"data"`
+    }
+
+    CaptchaReq{
+
+    }
+    CaptchaResp{
+        CaptchaId string `json:"captchaId"`
+        PicPath   string `json:"picPath"`
+    }
+
+    EmailCodeReq{
+        Email string `json:"email"`
+    }
+    EmailCodeResp{
+        EmailId string `json:"emailId"`
     }
 
 
@@ -117,6 +138,12 @@ service front-api {
 
     @handler AllRole
     post /api/persion/persion/allroles (AllRoleReq) returns (AllRoleResp)
+
+    @handler Captcha
+    post /api/Captcha (CaptchaReq) returns (CaptchaResp)
+
+    @handler EmailCode
+    post /api/emailCode (EmailCodeReq) returns (EmailCodeResp)
 }
 
 @server(

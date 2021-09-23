@@ -32,7 +32,8 @@ func (l *FindSignalChoiceLogic) FindSignalChoice(in *su.FindSignalChoiceReq) (*s
 	}
 
 	info := su.SignalChoiceInfo{
-		Id:            signalChoice.ID.Hex(),
+		Id:            signalChoice.Id.Hex(),
+		Type:          signalChoice.Type,
 		Title:         signalChoice.Title,
 		AAnswer:       signalChoice.AAnswer,
 		BAnswer:       signalChoice.BAnswer,

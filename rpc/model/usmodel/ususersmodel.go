@@ -20,12 +20,13 @@ var (
 	usUsersRowsExpectAutoSet   = strings.Join(stringx.Remove(usUsersFieldNames, "`id`", "`create_time`", "`update_time`"), ",")
 	usUsersRowsWithPlaceHolder = strings.Join(stringx.Remove(usUsersFieldNames, "`id`", "`create_time`", "`update_time`"), "=?,") + "=?"
 
-	usUsersRowsForInsert = strings.Join(stringx.Remove(usUsersFieldNames, "`id`"), ",")
-	usUsersRowsForUpdate = strings.Join(stringx.Remove(usUsersFieldNames, "`id`", "`create_time`"), "=?,") + "=?"
+	usUsersRowsForInsert     = strings.Join(stringx.Remove(usUsersFieldNames, "`id`"), ",")
+	usUsersRowsForUpdate     = strings.Join(stringx.Remove(usUsersFieldNames, "`id`", "`create_time`"), "=?,") + "=?"
 	usUsersRowsForDeleteSoft = strings.Join([]string{"delete_time"}, "=?,") + "=?"
 
 	cacheUsUsersIdPrefix          = "cache#usUsers#id#"
 	cacheUsUsersPhoneNumberPrefix = "cache#usUsers#phoneNumber#"
+	cacheUsUsersEmailPrefix = "cache:usUsers:email:"
 )
 
 type (
@@ -34,6 +35,7 @@ type (
 		InsertBySession(data UsUsers, session sqlx.Session) (sql.Result, error)
 		FindOne(id int64) (*UsUsers, error)
 		FindOneByPhoneNumber(phoneNumber string) (*UsUsers, error)
+		FindOneByEmail(email string) (*UsUsers, error)
 		FindAll(Current int64, PageSize int64) (*[]UsUsers, error)
 		Count() (int64, error)
 		Update(data UsUsers) error
@@ -62,6 +64,10 @@ type (
 		Sex         sql.NullString `db:"sex"`
 		RoleId      sql.NullInt64  `db:"role_id"`
 		State       sql.NullInt64  `db:"state"`
+		School		sql.NullString `db:"school"`
+		Academy		sql.NullString `db:"academy"`
+		ClassName	sql.NullString `db:"class_Name"`
+		Grade		sql.NullString `db:"grade"`
 		CreateTime  sql.NullTime   `db:"create_time"`
 		UpdateTime  sql.NullTime   `db:"update_time"`
 		DeleteTime  sql.NullTime   `db:"delete_time"`
@@ -79,16 +85,14 @@ func (m *defaultUsUsersModel) GetSqlCachedConn() sqlc.CachedConn {
 	return m.CachedConn
 }
 
-
-
 func (m *defaultUsUsersModel) Insert(data UsUsers) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, usUsersRowsForInsert)
+	query := fmt.Sprintf("insert into %s (%s) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, usUsersRowsForInsert)
 	data.CreateTime.Time = time.Now()
 	data.CreateTime.Valid = true
 	data.UpdateTime.Time = time.Now()
 	data.UpdateTime.Valid = true
 
-	ret, err := m.ExecNoCache(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State, data.CreateTime, data.UpdateTime, data.DeleteTime)
+	ret, err := m.ExecNoCache(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State,data.School,data.Academy,data.ClassName,data.Grade, data.CreateTime, data.UpdateTime, data.DeleteTime)
 	if err == nil {
 		id, _ := ret.LastInsertId()
 		m.DeleteIdCache(id)
@@ -98,12 +102,12 @@ func (m *defaultUsUsersModel) Insert(data UsUsers) (sql.Result, error) {
 
 //for Transact
 func (m *defaultUsUsersModel) InsertBySession(data UsUsers, session sqlx.Session) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, usUsersRowsForInsert)
+	query := fmt.Sprintf("insert into %s (%s) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, usUsersRowsForInsert)
 	data.CreateTime.Time = time.Now()
 	data.CreateTime.Valid = true
 	data.UpdateTime.Time = time.Now()
 	data.UpdateTime.Valid = true
-	ret, err := session.Exec(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State, data.CreateTime, data.UpdateTime, data.DeleteTime)
+	ret, err := session.Exec(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State, data.School,data.Academy,data.ClassName,data.Grade,data.CreateTime, data.UpdateTime, data.DeleteTime)
 	if err == nil {
 		id, _ := ret.LastInsertId()
 		m.DeleteIdCache(id)
@@ -151,6 +155,30 @@ func (m *defaultUsUsersModel) FindOneByPhoneNumber(phoneNumber string) (*UsUsers
 	}
 }
 
+func (m *defaultUsUsersModel) FindOneByEmail(email string) (*UsUsers, error) {
+	usUsersEmailKey := fmt.Sprintf("%s%v", cacheUsUsersEmailPrefix, email)
+	var resp UsUsers
+
+	err := m.QueryRowIndex(&resp, usUsersEmailKey, m.formatPrimary, func(conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+		query := fmt.Sprintf("select %s from %s where `email` = ? and `delete_time` is null limit 1", usUsersRows, m.table)
+		if err := conn.QueryRow(&resp, query, email); err != nil {
+			logx.Info("QueryRow error:" + err.Error())
+			return nil, err
+		}
+		return resp.Id, nil
+	}, m.queryPrimary)
+
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+
 func (m *defaultUsUsersModel) FindAll(Current int64, PageSize int64) (*[]UsUsers, error) {
 
 	if Current < 1 {
@@ -194,7 +222,7 @@ func (m *defaultUsUsersModel) Update(data UsUsers) error {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, usUsersRowsForUpdate)
 		data.UpdateTime.Time = time.Now()
 		data.UpdateTime.Valid = true
-		return conn.Exec(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State, data.UpdateTime, data.DeleteTime, data.Id)
+		return conn.Exec(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State, data.School,data.Academy,data.ClassName,data.Grade, data.UpdateTime, data.DeleteTime, data.Id)
 	}, usUsersIdKey)
 	return err
 }
@@ -204,7 +232,7 @@ func (m *defaultUsUsersModel) UpdateBySession(data UsUsers, session sqlx.Session
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, usUsersRowsForUpdate)
 	data.UpdateTime.Time = time.Now()
 	data.UpdateTime.Valid = true
-	_, err := session.Exec(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State, data.UpdateTime, data.DeleteTime, data.Id)
+	_, err := session.Exec(query, data.PhoneNumber, data.UniqueId, data.Number, data.Email, data.Name, data.Password, data.Sex, data.RoleId, data.State, data.School,data.Academy,data.ClassName,data.Grade, data.UpdateTime, data.DeleteTime, data.Id)
 
 	if err != nil {
 		return err
@@ -254,7 +282,7 @@ func (m *defaultUsUsersModel) DeleteBySession(id int64, session sqlx.Session) er
 func (m *defaultUsUsersModel) DeleteBySessionSoft(id int64, session sqlx.Session) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, usUsersRowsForDeleteSoft)
 	currTime := time.Now()
-	_, err := session.Exec(query,currTime, id)
+	_, err := session.Exec(query, currTime, id)
 
 	if err != nil {
 		return err
@@ -270,7 +298,7 @@ func (m *defaultUsUsersModel) DeleteIdCache(id int64) error {
 	usUsersIdKey := fmt.Sprintf("%s%v", cacheUsUsersIdPrefix, id)
 	return m.DelCache(usUsersIdKey)
 }
-func (m *defaultUsUsersModel) DeletePhoneNumberCache(phoneNumber string) error{
+func (m *defaultUsUsersModel) DeletePhoneNumberCache(phoneNumber string) error {
 	usUsersPhoneNumberKey := fmt.Sprintf("%s%v", cacheUsUsersPhoneNumberPrefix, phoneNumber)
 	return m.DelCache(usUsersPhoneNumberKey)
 }

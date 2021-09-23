@@ -17,9 +17,6 @@ import (
 	"github.com/tal-tech/go-zero/tools/goctl/model/sql/builderx"
 )
 
-
-
-
 var (
 	usRolesFieldNames          = builderx.RawFieldNames(&UsRoles{})
 	usRolesRows                = strings.Join(usRolesFieldNames, ",")
@@ -39,7 +36,7 @@ type Roster struct {
 	DisplayName string        `bson:"displayName"`
 }
 
-func myTest(){
+func myTest() {
 	model := mongo.MustNewModel("localhost:27017/blackboard", "roster")
 	for i := 0; i < 1000; i++ {
 		session, err := model.TakeSession()
@@ -55,6 +52,7 @@ func myTest(){
 
 	time.Sleep(time.Hour)
 }
+
 type (
 	UsRolesModel interface {
 		Insert(data UsRoles) (sql.Result, error)
@@ -73,6 +71,7 @@ type (
 
 	UsRoles struct {
 		Id         int64          `db:"id"`
+		RoleTypeId int64          `db:"role_type_id"`
 		RoleName   sql.NullString `db:"role_name"`
 		Remark     sql.NullString `db:"remark"`
 		CreateTime sql.NullTime   `db:"create_time"`
@@ -89,8 +88,8 @@ func NewUsRolesModel(conn sqlx.SqlConn, c cache.CacheConf) UsRolesModel {
 }
 
 func (m *defaultUsRolesModel) Insert(data UsRoles) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, usRolesRowsExpectAutoSet)
-	ret, err := m.ExecNoCache(query, data.Id, data.RoleName, data.Remark, data.CreateTime, data.UpdateTime, data.DeleteTime)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, usRolesRowsExpectAutoSet)
+	ret, err := m.ExecNoCache(query, data.Id, data.RoleTypeId,data.RoleName, data.Remark, data.CreateTime, data.UpdateTime, data.DeleteTime)
 
 	return ret, err
 }

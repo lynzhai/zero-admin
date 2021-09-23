@@ -27,7 +27,7 @@ func NewAddStudentToSubjectLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 //  添加学生到课程
-func (l *AddStudentToSubjectLogic) AddStudentToSubject(in *su.AddStudentToSubjectReq) (*su.AddStudentToSubjectResp, error) {
+func (l *AddStudentToSubjectLogic) AddStudentToSubject(in *su.AddStudentToSubjectReq) (*su.AddStudentToSubjectResp,error) {
 	// todo: add your logic here and delete this line
 	_, err := l.svcCtx.SuSubjectLearnModel.Insert(sumodel.SuSubjectLearn{
 		UserId:    in.UserId,
@@ -38,10 +38,11 @@ func (l *AddStudentToSubjectLogic) AddStudentToSubject(in *su.AddStudentToSubjec
 		},
 	})
 	if err != nil {
-		logx.Errorf("err:"+ err.Error())
-		return &su.AddStudentToSubjectResp{}, errorAddStudentToSubject
+		logx.Errorf("err:" + err.Error())
+		return &su.AddStudentToSubjectResp{},err
 	}
+
 	return &su.AddStudentToSubjectResp{
 		Result: true,
-	}, nil
+	},nil
 }

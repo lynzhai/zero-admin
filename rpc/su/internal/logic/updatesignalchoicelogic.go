@@ -28,7 +28,8 @@ func (l *UpdateSignalChoiceLogic) UpdateSignalChoice(in *su.UpdateSignalChoiceRe
 	// todo: add your logic here and delete this line
 
 	err := l.svcCtx.SignalChoiceModel.Update(l.ctx, &papermodel.SignalChoice{
-		ID:            bson.ObjectIdHex(in.Id),
+		Id:            bson.ObjectIdHex(in.Id),
+		Type:          in.Type,
 		Title:         in.Title,
 		AAnswer:       in.AAnswer,
 		BAnswer:       in.BAnswer,
@@ -49,7 +50,8 @@ func (l *UpdateSignalChoiceLogic) UpdateSignalChoice(in *su.UpdateSignalChoiceRe
 	}
 
 	info := su.SignalChoiceInfo{
-		Id:            signalChoice.ID.Hex(),
+		Id:            signalChoice.Id.Hex(),
+		Type:          signalChoice.Type,
 		Title:         signalChoice.Title,
 		AAnswer:       signalChoice.AAnswer,
 		BAnswer:       signalChoice.BAnswer,

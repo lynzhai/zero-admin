@@ -1,0 +1,58 @@
+{
+  "paperName": "测试试题1",
+  "createrId": 107,
+  "status": 0,
+  "startTime": "1995-11-21 16:53:27",
+  "stopTime": "1986-04-09 21:50:12",
+  "version": "2.0",
+  "paperItems": [
+    {
+      "type": "PageBar",
+      "pageBar": {
+        "instruction": "pageBar1",
+        "currentPage": 1,
+        "type": "PageBar",
+        "totalPage": 1
+      }
+    },
+    {
+      "type": "SubjectNumberAndIdPair",
+      "subjectNumberAndIdPair": {
+        "subjectNumber": 1,
+        "subjectId": "6107a7d0fbfd2a56006afa25",
+        "type": "SubjectNumberAndIdPair"
+      }
+    },
+    {
+      "type": "SubjectNumberAndIdPair",
+      "subjectNumberAndIdPair": {
+        "subjectNumber": 2,
+        "subjectId": "6107a7d0fbfd2a56006afa22",
+        "type": "SubjectNumberAndIdPair"
+      }
+    },
+    {
+      "type": "SubjectNumberAndIdPair",
+      "subjectNumberAndIdPair": {
+        "subjectNumber": 3,
+        "subjectId": "6107a7d0fbfd2a56006afa23",
+        "type": "SubjectNumberAndIdPair"
+      }
+    },
+    {
+      "type": "SubjectNumberAndIdPair",
+      "subjectNumberAndIdPair": {
+        "subjectNumber": 4,
+        "subjectId": "6107a7d0fbfd2a56006afa24",
+        "type": "SubjectNumberAndIdPair"
+      }
+    },
+    {
+      "type": "ParagraphInstruction",
+      "paragraphInstruction": {
+        "instruction": "paragraphInstruction1",
+        "type": "ParagraphInstruction"
+      }
+    }
+  ]
+}

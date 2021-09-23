@@ -80,3 +80,13 @@ func (s *UsServer) PersionInfo(ctx context.Context, in *us.PersionInfoReq) (*us.
 	l := logic.NewPersionInfoLogic(ctx, s.svcCtx)
 	return l.PersionInfo(in)
 }
+
+func (s *UsServer) Captcha(ctx context.Context, in *us.CaptchaReq) (*us.CaptchaResp, error) {
+	l := logic.NewCaptchaLogic(ctx, s.svcCtx)
+	return l.Captcha(in)
+}
+
+func (s *UsServer) EmailCode(ctx context.Context, in *us.EmailCodeReq) (*us.EmailCodeResp, error) {
+	l := logic.NewEmailCodeLogic(ctx, s.svcCtx)
+	return l.EmailCode(in)
+}

@@ -412,17 +412,19 @@ type OrderQueryResp struct {
 }
 
 type PersionRegisterReq struct {
-	PhoneNumber string `json:"phoneNumber"`
-	Password    string `json:"password"`
-	Number      string `json:"number"`
+	PhoneNumber string `json:"phoneNumber" validate:"required,min=11"`
+	Password    string `json:"password" validate:"required,min=6"`
+	Number      string `json:"number,optional"`
 	Email       string `json:"email"`
 	Gender      string `json:"gender"`
 	Name        string `json:"name"`
 	RoleId      int64  `json:"roleId"`
-	Class       string `json:"class,optional"`
+	ClassName   string `json:"className,optional"`
 	Academy     string `json:"academy,optional"`
 	School      string `json:"school,optional"`
 	Grade       string `json:"grade,optional"`
+	EmailId     string `json:"emailId"`
+	EmailCode   string `json:"emailCode"`
 }
 
 type PersionRegisterRespData struct {
@@ -442,16 +444,20 @@ type PersionInfo struct {
 	Email       string `json:"email"`
 	RoleName    string `json:"roleName"`
 	RoleId      int64  `json:"roleId"`
+	RoleTypeId  int64  `json:"roleTypeId"`
 	Gender      string `json:"gender"`
-	Class       string `json:"class"`
+	ClassName   string `json:"className"`
 	Academy     string `json:"academy"`
 	School      string `json:"school"`
 	Grade       string `json:"grade"`
+	State       int64  `json:"state"`
 }
 
 type PersionLoginReq struct {
 	Password    string `json:"password"`
 	PhoneNumber string `json:"phoneNumber"`
+	Captcha     string `json:"captcha"`   // 验证码
+	CaptchaId   string `json:"captchaId"` // 验证码ID
 }
 
 type PersionLoginRespData struct {
@@ -474,7 +480,6 @@ type PersionJwtToken struct {
 }
 
 type PersionInfoReq struct {
-	Id int64 `json:"id"`
 }
 
 type PersionInfoResp struct {
@@ -488,6 +493,7 @@ type AllRoleReq struct {
 
 type RoleData struct {
 	Id         int64  `json:"id"`
+	RoleTypeId int64  `json:"roleTypeId"`
 	RoleName   string `json:"roleName"`
 	Remark     string `json:"remark"`
 	CreateTime string `json:"createTime"`
@@ -503,6 +509,22 @@ type AllRoleResp struct {
 	Code    int64       `json:"code"`
 	Message string      `json:"message"`
 	Data    AllRoleData `json:"data"`
+}
+
+type CaptchaReq struct {
+}
+
+type CaptchaResp struct {
+	CaptchaId string `json:"captchaId"`
+	PicPath   string `json:"picPath"`
+}
+
+type EmailCodeReq struct {
+	Email string `json:"email"`
+}
+
+type EmailCodeResp struct {
+	EmailId string `json:"emailId"`
 }
 
 type SubjectInfo struct {
@@ -669,6 +691,7 @@ type FindSubjectsByStudentResp struct {
 type SignalChoiceInfo struct {
 	Id            string `json:"id"`
 	Title         string `json:"title"`
+	Type          string `json:"type"`
 	AAnswer       string `json:"aAnswer"`
 	BAnswer       string `json:"bAnswer"`
 	CAnswer       string `json:"cAnswer"`
@@ -684,8 +707,9 @@ type SignalChoiceInfo struct {
 
 type AddSignalChoiceReq struct {
 	Title         string `json:"title" validate:"required,gt=4"`
-	AAnswer       string `json:"aAnswer" validate:"required,gt=0"`
-	BAnswer       string `json:"bAnswer" validate:"required,gt=0"`
+	Type          string `json:"type" validate:"required,min=1"`
+	AAnswer       string `json:"aAnswer" validate:"required,min=1"`
+	BAnswer       string `json:"bAnswer" validate:"required,min=1"`
 	CAnswer       string `json:"cAnswer,optional"`
 	DAnswer       string `json:"dAnswer,optional"`
 	EAnswer       string `json:"eAnswer,optional"`
@@ -701,10 +725,11 @@ type AddSignalChoiceResp struct {
 }
 
 type UpdateSignalChoiceReq struct {
-	Id            string `json:"id" validate:"required,gt=4"`
-	Title         string `json:"title" validate:"required,gt=4"`
-	AAnswer       string `json:"aAnswer" validate:"required,gt=0"`
-	BAnswer       string `json:"bAnswer" validate:"required,gt=0"`
+	Id            string `json:"id" validate:"required,min=4"`
+	Title         string `json:"title" validate:"required,min=4"`
+	Type          string `json:"type" validate:"required,min=1"`
+	AAnswer       string `json:"aAnswer" validate:"required,min=1"`
+	BAnswer       string `json:"bAnswer" validate:"required,min=1"`
 	CAnswer       string `json:"cAnswer,optional"`
 	DAnswer       string `json:"dAnswer,optional"`
 	EAnswer       string `json:"eAnswer,optional"`
@@ -720,7 +745,7 @@ type UpdateSignalChoiceResp struct {
 }
 
 type DeleteSignalChoiceReq struct {
-	Id string `json:"id" validate:"required,gt=4"`
+	Id string `json:"id" validate:"required,min=4"`
 }
 
 type DeleteSignalChoiceRespData struct {
@@ -741,4 +766,126 @@ type FindSignalChoiceResp struct {
 	Code    int64            `json:"code"`
 	Message string           `json:"message"`
 	Data    SignalChoiceInfo `json:"data"`
+}
+
+type SelfPaperInfo struct {
+	Id             string           `json:"id" validate:"required,min=4"`
+	PaperName      string           `json:"paperName" validate:"required,min=4"`
+	CreaterId      int64            `json:"createrId" validate:"required,min=4"`
+	Status         int64            `json:"status"`
+	StartTime      string           `json:"startTime"`
+	StopTime       string           `json:"stopTime"`
+	Version        string           `json:"version"`
+	CreateTime     string           `json:"createTime"`
+	UpdateTime     string           `json:"updateTime"`
+	DeleteTime     string           `json:"deleteTime"`
+	Deleted        bool             `json:"deleted"`
+	PaperItems     []*PaperItem     `json:"paperItems"`
+	RandomSettings []*RandomSetting `json:"randomSettings"`
+}
+
+type RandomSetting struct {
+	StartNumber  int64 `json:"startNumber" validate:"required,gt=0"`
+	EndNumber    int64 `json:"endNumber" validate:"required,gt=0"`
+	SubjectCount int64 `json:"subjectCount" validate:"required,gt=0"`
+}
+
+type ParagraphInstruction struct {
+	Instruction string `json:"instruction" validate:"required,min=1"`
+	Type        string `json:"type" validate:"required,min=1"`
+}
+
+type PageBar struct {
+	Instruction string `json:"instruction"`
+	CurrentPage int64  `json:"currentPage" validate:"required,gt=0"`
+	TotalPage   int64  `json:"totalPage" validate:"required,gt=0"`
+	Type        string `json:"type" validate:"required,min=1"`
+}
+
+type SubjectNumberAndIdPair struct {
+	SubjectNumber int64  `json:"subjectNumber" validate:"required,gt=0"`
+	SubjectId     string `json:"subjectId" validate:"required,min=1"`
+	Type          string `json:"type" validate:"required,min=1"`
+}
+
+type SignalChoiceWithSerial struct {
+	SubjectNumber int64            `json:"subjectNumber" validate:"required,gt=0"`
+	Type          string           `json:"type" validate:"required,min=1"`
+	SignalChoice  SignalChoiceInfo `json:"signalChoice" validate:"required"`
+}
+
+type PaperItem struct {
+	Type                   string                  `json:"type" validate:"required,min=1"`
+	PageBar                *PageBar                `json:"pageBar,optional"`
+	ParagraphInstruction   *ParagraphInstruction   `json:"paragraphInstruction,optional"`
+	SubjectNumberAndIdPair *SubjectNumberAndIdPair `json:"subjectNumberAndIdPair,optional"`
+	SignalChoiceWithSerial *SignalChoiceWithSerial `json:"signalChoiceWithSerial,optional"`
+}
+
+type AddSelfPaperReq struct {
+	PaperName      string           `json:"paperName" validate:"required,min=1"`
+	CreaterId      int64            `json:"createrId" validate:"required,min=1"`
+	Status         int64            `json:"status"`
+	StartTime      string           `json:"startTime"`
+	StopTime       string           `json:"stopTime"`
+	Version        string           `json:"version"`
+	PaperItems     []*PaperItem     `json:"paperItems"`
+	RandomSettings []*RandomSetting `json:"randomSettings,optional"`
+}
+
+type AddSelfPaperRespData struct {
+	Result bool   `json:"result"`
+	Id     string `json:"id"`
+}
+
+type AddSelfPaperResp struct {
+	Code    int64                `json:"code"`
+	Message string               `json:"message"`
+	Data    AddSelfPaperRespData `json:"data"`
+}
+
+type UpdateSelfPaperReq struct {
+	Id             string           `json:"id"`
+	PaperName      string           `json:"paperName"`
+	CreaterId      int64            `json:"createrId"`
+	Status         int64            `json:"status"`
+	StartTime      string           `json:"startTime"`
+	StopTime       string           `json:"stopTime"`
+	Version        string           `json:"version"`
+	PaperItems     []*PaperItem     `json:"paperItems"`
+	RandomSettings []*RandomSetting `json:"randomSettings,optional"`
+}
+
+type UpdateSelfPaperRespData struct {
+	Result bool `json:"result"`
+}
+
+type UpdateSelfPaperResp struct {
+	Code    int64                   `json:"code"`
+	Message string                  `json:"message"`
+	Data    UpdateSelfPaperRespData `json:"data"`
+}
+
+type DeleteSelfPaperReq struct {
+	Id string `json:"id"`
+}
+
+type DeleteSelfPaperRespData struct {
+	Result bool `json:"result"`
+}
+
+type DeleteSelfPaperResp struct {
+	Code    int64                   `json:"code"`
+	Message string                  `json:"message"`
+	Data    DeleteSelfPaperRespData `json:"data"`
+}
+
+type FindSelfPaperReq struct {
+	Id string `json:"id"`
+}
+
+type FindSelfPaperResp struct {
+	Code    int64         `json:"code"`
+	Message string        `json:"message"`
+	Data    SelfPaperInfo `json:"data"`
 }

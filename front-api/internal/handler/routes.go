@@ -12,6 +12,7 @@ import (
 	productcategory "go-zero-admin/front-api/internal/handler/product/category"
 	productproduct "go-zero-admin/front-api/internal/handler/product/product"
 	smshome "go-zero-admin/front-api/internal/handler/sms/home"
+	subjectselfpaper "go-zero-admin/front-api/internal/handler/subject/selfpaper"
 	subjectsignalchoice "go-zero-admin/front-api/internal/handler/subject/signalchoice"
 	subjectsubject "go-zero-admin/front-api/internal/handler/subject/subject"
 	"go-zero-admin/front-api/internal/svc"
@@ -148,6 +149,16 @@ func RegisterHandlers(engine *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/api/persion/persion/allroles",
 				Handler: persionpersion.AllRoleHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/Captcha",
+				Handler: persionpersion.CaptchaHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/emailCode",
+				Handler: persionpersion.EmailCodeHandler(serverCtx),
+			},
 		},
 	)
 
@@ -234,6 +245,32 @@ func RegisterHandlers(engine *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/subject/signalchoice/findsignalchoice",
 				Handler: subjectsignalchoice.FindSignalChoiceHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+	)
+
+	engine.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/selfpaper/addselfpaper",
+				Handler: subjectselfpaper.AddSelfPaperHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/selfpaper/updateselfpaper",
+				Handler: subjectselfpaper.UpdateSelfPaperHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/selfpaper/deleteselfpaper",
+				Handler: subjectselfpaper.DeleteSelfPaperHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/subject/selfpaper/findselfpaper",
+				Handler: subjectselfpaper.FindSelfPaperHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

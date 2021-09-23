@@ -8,7 +8,7 @@ ENV GOPROXY https://goproxy.cn,direct
 
 WORKDIR /build/zero
 COPY . .
-RUN sh -c "[ -f go.mod ]" || exit
+RUN sh -c "[ -f ./../../go.mod ]" || exit
 COPY rpc/ums/etc /app/etc
 RUN go build -ldflags="-s -w" -o /app/ums rpc/ums/ums.go
 

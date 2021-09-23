@@ -31,7 +31,7 @@ func AddRole(r *redis.Redis, c *usmodel.UsRoles) error {
 //
 func AddRoleId(r *redis.Redis, id int64) error {
 	s := strconv.FormatInt(id, 10)
-	_, err := r.Zadd(bizContentCacheKey,id,s)
+	_, err := r.Zadd(bizContentCacheKey, id, s)
 	return err
 }
 
@@ -49,13 +49,14 @@ func DelRoleId(r *redis.Redis, id int64) error {
 }
 
 func DelAllRole(r *redis.Redis) error {
-	_, err := r.Zremrangebyscore(bizContentCacheKey, 0,20)
+	_, err := r.Zremrangebyscore(bizContentCacheKey, 0, 20)
 	return err
 }
 
-func SetRoleBizCacheExpire(r *redis.Redis,seconds int){
-	r.Expire(bizContentCacheKey,seconds)
+func SetRoleBizCacheExpire(r *redis.Redis, seconds int) {
+	r.Expire(bizContentCacheKey, seconds)
 }
+
 // 内容压缩
 //func compress(c *usmodel.UsRoles) string {
 //	// todo: do it yourself
@@ -100,9 +101,9 @@ func redisListRolesByScoreId(svcCtx *svc.ServiceContext, start, end int64) (*[]u
 			continue
 		}
 		itemRole := usmodel.UsRoles{
-			Id:       usRole.Id,
-			RoleName: usRole.RoleName,
-			Remark:   usRole.Remark,
+			Id:         usRole.Id,
+			RoleName:   usRole.RoleName,
+			Remark:     usRole.Remark,
 			CreateTime: usRole.CreateTime,
 			UpdateTime: usRole.UpdateTime,
 			DeleteTime: usRole.DeleteTime,
@@ -110,7 +111,7 @@ func redisListRolesByScoreId(svcCtx *svc.ServiceContext, start, end int64) (*[]u
 		usRoles = append(usRoles, itemRole)
 		//ids = append(ids,usRole.Id)
 	}
-	if len(usRoles) == 0{
+	if len(usRoles) == 0 {
 		return &usRoles, errors.New("Redis 找不到角色")
 	}
 

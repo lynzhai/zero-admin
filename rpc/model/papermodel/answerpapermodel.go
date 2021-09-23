@@ -29,8 +29,8 @@ func NewAnswerPaperModel(url, collection string, c cachec.CacheConf) AnswerPaper
 }
 
 func (m *defaultAnswerPaperModel) Insert(ctx context.Context, data *AnswerPaper) error {
-	if !data.ID.Valid() {
-		data.ID = bson.NewObjectId()
+	if !data.Id.Valid() {
+		data.Id = bson.NewObjectId()
 	}
 
 	session, err := m.TakeSession()
@@ -74,8 +74,8 @@ func (m *defaultAnswerPaperModel) Update(ctx context.Context, data *AnswerPaper)
 	}
 
 	defer m.PutSession(session)
-	key := prefixAnswerPaperCacheKey + data.ID.Hex()
-	return m.GetCollection(session).UpdateId(data.ID, data, key)
+	key := prefixAnswerPaperCacheKey + data.Id.Hex()
+	return m.GetCollection(session).UpdateId(data.Id, data, key)
 }
 
 func (m *defaultAnswerPaperModel) Delete(ctx context.Context, id string) error {

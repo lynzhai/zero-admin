@@ -19,8 +19,8 @@ var (
 	usTeacherRowsExpectAutoSet   = strings.Join(stringx.Remove(usTeacherFieldNames, "`id`", "`create_time`", "`update_time`"), ",")
 	usTeacherRowsWithPlaceHolder = strings.Join(stringx.Remove(usTeacherFieldNames, "`id`", "`create_time`", "`update_time`"), "=?,") + "=?"
 
-	usTeacherRowsForInsert = strings.Join(stringx.Remove(usTeacherFieldNames, "`id`"), ",")
-	usTeacherRowsForUpdate = strings.Join(stringx.Remove(usTeacherFieldNames, "`id`", "`create_time`"), "=?,") + "=?"
+	usTeacherRowsForInsert     = strings.Join(stringx.Remove(usTeacherFieldNames, "`id`"), ",")
+	usTeacherRowsForUpdate     = strings.Join(stringx.Remove(usTeacherFieldNames, "`id`", "`create_time`"), "=?,") + "=?"
 	usTeacherRowsForDeleteSoft = strings.Join([]string{"delete_time"}, "=?,") + "=?"
 
 	cacheUsTeacherIdPrefix = "cache#usTeacher#id#"

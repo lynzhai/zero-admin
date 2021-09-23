@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="oms" type="GoApplicationRunConfiguration" factoryName="Go Application">
-    <module name="go-zero-admin" />
-    <working_directory value="$PROJECT_DIR$" />
+    <module name="zero-admin" />
+    <working_directory value="$PROJECT_DIR$/rpc/oms" />
     <kind value="PACKAGE" />
     <filePath value="$PROJECT_DIR$/rpc/oms/oms.go" />
     <package value="go-zero-admin/rpc/oms" />

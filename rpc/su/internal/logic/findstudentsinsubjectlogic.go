@@ -30,7 +30,7 @@ func (l *FindStudentsInSubjectLogic) FindStudentsInSubject(in *su.FindStudentsIn
 
 	suSubjectLearns, err := l.svcCtx.SuSubjectLearnModel.FindOneSubjectAllUser(in.SubjectId, in.Offset, in.PageSize)
 	if err != nil {
-		logx.Errorf("err:"+ err.Error())
+		logx.Errorf("err:" + err.Error())
 		return &su.FindStudentsInSubjectResp{}, errorFindStudentInSubject
 	}
 	count, _ := l.svcCtx.SuSubjectLearnModel.OneSubjectUserCount(in.SubjectId)
@@ -55,14 +55,15 @@ func (l *FindStudentsInSubjectLogic) FindStudentsInSubject(in *su.FindStudentsIn
 			Gender:      persionInfoResp.Info.Gender,
 			Name:        persionInfoResp.Info.Name,
 			RoleId:      persionInfoResp.Info.RoleId,
+			RoleTypeId:  persionInfoResp.Info.RoleTypeId,
 			RoleType:    persionInfoResp.Info.RoleName,
-			State:       persionInfoResp.Info.State,
 			CreateTime:  persionInfoResp.Info.CreateTime,
 			UpdateTime:  persionInfoResp.Info.UpdateTime,
-			Class:       persionInfoResp.Info.Class,
+			ClassName:   persionInfoResp.Info.ClassName,
 			Academy:     persionInfoResp.Info.Academy,
 			School:      persionInfoResp.Info.School,
 			Grade:       persionInfoResp.Info.Grade,
+			State:       persionInfoResp.Info.State,
 		})
 	}
 

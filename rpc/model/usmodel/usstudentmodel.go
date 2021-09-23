@@ -19,8 +19,8 @@ var (
 	usStudentRowsExpectAutoSet   = strings.Join(stringx.Remove(usStudentFieldNames, "`id`", "`create_time`", "`update_time`"), ",")
 	usStudentRowsWithPlaceHolder = strings.Join(stringx.Remove(usStudentFieldNames, "`id`", "`create_time`", "`update_time`"), "=?,") + "=?"
 
-	usStudentRowsForInsert                = strings.Join(stringx.Remove(usStudentFieldNames, "`id`"), ",")
-	usStudentRowsForUpdate                = strings.Join(stringx.Remove(usStudentFieldNames, "`id`", "`create_time`"), "=?,") + "=?"
+	usStudentRowsForInsert = strings.Join(stringx.Remove(usStudentFieldNames, "`id`"), ",")
+	usStudentRowsForUpdate = strings.Join(stringx.Remove(usStudentFieldNames, "`id`", "`create_time`"), "=?,") + "=?"
 
 	cacheUsStudentIdPrefix = "cache#usStudent#id#"
 )
@@ -71,7 +71,7 @@ func (m *defaultUsStudentModel) Insert(data UsStudent) (sql.Result, error) {
 	data.CreateTime.Valid = true
 	data.UpdateTime.Time = time.Now()
 	data.UpdateTime.Valid = true
-	ret, err := m.ExecNoCache(query, data.Academy, data.Class, data.School, data.Grade, data.UserId, data.CreateTime,data.UpdateTime,data.DeleteTime)
+	ret, err := m.ExecNoCache(query, data.Academy, data.Class, data.School, data.Grade, data.UserId, data.CreateTime, data.UpdateTime, data.DeleteTime)
 
 	if err == nil {
 		id, _ := ret.LastInsertId()
@@ -88,7 +88,7 @@ func (m *defaultUsStudentModel) InsertBySession(data UsStudent, session sqlx.Ses
 	data.CreateTime.Valid = true
 	data.UpdateTime.Time = time.Now()
 	data.UpdateTime.Valid = true
-	ret, err := session.Exec(query, data.Academy, data.Class, data.School, data.Grade, data.UserId,data.CreateTime,data.UpdateTime, data.DeleteTime)
+	ret, err := session.Exec(query, data.Academy, data.Class, data.School, data.Grade, data.UserId, data.CreateTime, data.UpdateTime, data.DeleteTime)
 
 	if err == nil {
 		id, _ := ret.LastInsertId()

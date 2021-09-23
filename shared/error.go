@@ -1,7 +1,6 @@
 package shared
 
 import (
-	"google.golang.org/grpc/status"
 	"net/http"
 )
 
@@ -16,14 +15,15 @@ func ErrorHandler(err error) (int, interface{}) {
 }
 
 func getGrpcErrorMessage(err error) string {
-	s, flag := status.FromError(err)
-	message := ""
-	if flag {
-		message = s.Message()
-	} else {
-		message = err.Error()
-	}
-	return message
+	//s, flag := status.FromError(err)
+	//message := ""
+	//if flag {
+	//	message = s.Message()
+	//} else {
+	//	message = err.Error()
+	//}
+	//return message
+	return err.Error()
 }
 
 type CodeError struct {

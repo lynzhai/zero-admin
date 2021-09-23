@@ -52,11 +52,13 @@ func (l *FindStudentsBySubjectLogic) FindStudentsBySubject(req types.FindStudent
 			Email:       v.Email,
 			RoleName:    v.RoleType,
 			RoleId:      v.RoleId,
+			RoleTypeId:  v.RoleTypeId,
 			Gender:      v.Gender,
-			Class:       v.Class,
+			ClassName:   v.ClassName,
 			Academy:     v.Academy,
 			School:      v.School,
 			Grade:       v.Grade,
+			State:       v.State,
 		}
 		persionInfos = append(persionInfos, &info)
 	}

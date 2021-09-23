@@ -108,9 +108,9 @@ type(
 
 
     FindStudentsBySubjectReq  struct {
-        SubjectId      int64 `json:"subjectId" validate:"required,gt=0"`   // subject id
+        SubjectId      int64    `json:"subjectId" validate:"required,gt=0"`   // subject id
         Offset         int64    `json:"offset,default=1"`
-        PageSize       int64  `json:"pageSize,default=10"`
+        PageSize       int64    `json:"pageSize,default=10"`
     }
 
     FindStudentsBySubjectRespListData struct {
@@ -175,82 +175,6 @@ type(
 
 
 
-    SignalChoiceInfo struct{
-         Id string        `json:"id"`
-         Title string     `json:"title"`
-         AAnswer string   `json:"aAnswer"`
-         BAnswer string    `json:"bAnswer"`
-         CAnswer string    `json:"cAnswer"`
-         DAnswer string    `json:"dAnswer"`
-         EAnswer string    `json:"eAnswer"`
-         FAnswer string    `json:"fAnswer"`
-         CorrectAnswer string `json:"correctAnswer"`
-         Version string    `json:"version"`
-         CreateTime string `json:"createTime"`
-         UpdateTime string `json:"updateTime"`
-         DeleteTime string `json:"deleteTime"`
-    }
-
-    AddSignalChoiceReq  struct {
-        Title string     `json:"title" validate:"required,gt=4"`
-        AAnswer string   `json:"aAnswer" validate:"required,gt=0"`
-        BAnswer string    `json:"bAnswer" validate:"required,gt=0"`
-        CAnswer string    `json:"cAnswer,optional"`
-        DAnswer string    `json:"dAnswer,optional"`
-        EAnswer string    `json:"eAnswer,optional"`
-        FAnswer string    `json:"fAnswer,optional"`
-        CorrectAnswer string `json:"correctAnswer,options=A|B|C|D|E|F"`
-        Version string    `json:"version,optional"`
-    }
-
-    AddSignalChoiceResp struct{
-        Code        int64        `json:"code"`
-        Message     string       `json:"message"`
-        Data        SignalChoiceInfo  `json:"data"`
-    }
-
-    UpdateSignalChoiceReq  struct {
-        Id string        `json:"id" validate:"required,gt=4"`
-        Title string     `json:"title" validate:"required,gt=4"`
-        AAnswer string   `json:"aAnswer" validate:"required,gt=0"`
-        BAnswer string    `json:"bAnswer" validate:"required,gt=0"`
-        CAnswer string    `json:"cAnswer,optional"`
-        DAnswer string    `json:"dAnswer,optional"`
-        EAnswer string    `json:"eAnswer,optional"`
-        FAnswer string    `json:"fAnswer,optional"`
-        CorrectAnswer string `json:"correctAnswer,options=A|B|C|D|E|F"`
-        Version string    `json:"version,optional"`
-    }
-
-    UpdateSignalChoiceResp struct{
-        Code        int64        `json:"code"`
-        Message     string       `json:"message"`
-        Data        SignalChoiceInfo  `json:"data"`
-    }
-
-    DeleteSignalChoiceReq  struct {
-        Id string        `json:"id" validate:"required,gt=4"`
-    }
-
-    DeleteSignalChoiceRespData struct {
-        Result       bool `json:"result"`
-    }
-
-    DeleteSignalChoiceResp struct{
-        Code        int64        `json:"code"`
-        Message     string       `json:"message"`
-        Data        DeleteSignalChoiceRespData  `json:"data"`
-    }
-
-    FindSignalChoiceReq  struct {
-        Id string        `json:"id" validate:"required,gt=4"`
-    }
-
-    FindSignalChoiceResp struct{
-        Code        int64        `json:"code"`
-        Message     string       `json:"message"`
-        Data        SignalChoiceInfo  `json:"data"`
-    }
 
 
 
@@ -295,6 +219,91 @@ service front-api {
 
 }
 
+
+type (
+    SignalChoiceInfo struct{
+        Id string        `json:"id"`
+        Title string     `json:"title"`
+        Type string       `json:"type"`
+        AAnswer string   `json:"aAnswer"`
+        BAnswer string    `json:"bAnswer"`
+        CAnswer string    `json:"cAnswer"`
+        DAnswer string    `json:"dAnswer"`
+        EAnswer string    `json:"eAnswer"`
+        FAnswer string    `json:"fAnswer"`
+        CorrectAnswer string `json:"correctAnswer"`
+        Version string    `json:"version"`
+        CreateTime string `json:"createTime"`
+        UpdateTime string `json:"updateTime"`
+        DeleteTime string `json:"deleteTime"`
+    }
+
+    AddSignalChoiceReq  struct {
+        Title string     `json:"title" validate:"required,gt=4"`
+        Type  string     `json:"type" validate:"required,min=1"`
+        AAnswer string    `json:"aAnswer" validate:"required,min=1"`
+        BAnswer string    `json:"bAnswer" validate:"required,min=1"`
+        CAnswer string    `json:"cAnswer,optional"`
+        DAnswer string    `json:"dAnswer,optional"`
+        EAnswer string    `json:"eAnswer,optional"`
+        FAnswer string    `json:"fAnswer,optional"`
+        CorrectAnswer string `json:"correctAnswer,options=A|B|C|D|E|F"`
+        Version string    `json:"version,optional"`
+    }
+
+    AddSignalChoiceResp struct{
+        Code        int64        `json:"code"`
+        Message     string       `json:"message"`
+        Data        SignalChoiceInfo  `json:"data"`
+    }
+
+    UpdateSignalChoiceReq  struct {
+        Id string        `json:"id" validate:"required,min=4"`
+        Title string     `json:"title" validate:"required,min=4"`
+        Type  string     `json:"type" validate:"required,min=1"`
+        AAnswer string   `json:"aAnswer" validate:"required,min=1"`
+        BAnswer string    `json:"bAnswer" validate:"required,min=1"`
+        CAnswer string    `json:"cAnswer,optional"`
+        DAnswer string    `json:"dAnswer,optional"`
+        EAnswer string    `json:"eAnswer,optional"`
+        FAnswer string    `json:"fAnswer,optional"`
+        CorrectAnswer string `json:"correctAnswer,options=A|B|C|D|E|F"`
+        Version string    `json:"version,optional"`
+    }
+
+    UpdateSignalChoiceResp struct{
+        Code        int64        `json:"code"`
+        Message     string       `json:"message"`
+        Data        SignalChoiceInfo  `json:"data"`
+    }
+
+    DeleteSignalChoiceReq  struct {
+        Id string        `json:"id" validate:"required,min=4"`
+    }
+
+    DeleteSignalChoiceRespData struct {
+        Result       bool `json:"result"`
+    }
+
+    DeleteSignalChoiceResp struct{
+        Code        int64        `json:"code"`
+        Message     string       `json:"message"`
+        Data        DeleteSignalChoiceRespData  `json:"data"`
+    }
+
+    FindSignalChoiceReq  struct {
+        Id string        `json:"id" validate:"required,gt=4"`
+    }
+
+    FindSignalChoiceResp struct{
+        Code        int64        `json:"code"`
+        Message     string       `json:"message"`
+        Data        SignalChoiceInfo  `json:"data"`
+    }
+
+)
+
+
 @server(
     jwt: Auth
     group: subject/signalchoice
@@ -312,3 +321,164 @@ service front-api {
     @handler FindSignalChoice
     post /api/subject/signalchoice/findsignalchoice (FindSignalChoiceReq) returns (FindSignalChoiceResp)
 }
+
+
+
+
+type(
+
+    SelfPaperInfo struct{
+         Id             string          `json:"id" validate:"required,min=4"`
+         PaperName      string          `json:"paperName" validate:"required,min=4"`
+         CreaterId      int64           `json:"createrId" validate:"required,min=4"`
+         Status         int64           `json:"status"`
+         StartTime      string          `json:"startTime"`
+         StopTime       string          `json:"stopTime"`
+         Version        string          `json:"version"`
+         CreateTime     string          `json:"createTime"`
+         UpdateTime     string          `json:"updateTime"`
+         DeleteTime     string          `json:"deleteTime"`
+         Deleted        bool            `json:"deleted"`
+         PaperItems     []*PaperItem     `json:"paperItems"`
+         RandomSettings []*RandomSetting `json:"randomSettings"`
+    }
+
+    RandomSetting struct{
+        StartNumber   int64  `json:"startNumber" validate:"required,gt=0"`
+        EndNumber     int64  `json:"endNumber" validate:"required,gt=0"`
+        SubjectCount  int64  `json:"subjectCount" validate:"required,gt=0"`
+    }
+
+    ParagraphInstruction struct{
+        Instruction string  `json:"instruction" validate:"required,min=1"`
+        Type  string    `json:"type" validate:"required,min=1"`
+    }
+
+    PageBar struct{
+        Instruction string  `json:"instruction"`
+        CurrentPage int64   `json:"currentPage" validate:"required,gt=0"`
+        TotalPage  int64    `json:"totalPage" validate:"required,gt=0"`
+        Type string         `json:"type" validate:"required,min=1"`
+    }
+
+
+    SubjectNumberAndIdPair struct{
+         SubjectNumber int64    `json:"subjectNumber" validate:"required,gt=0"`
+         SubjectId string        `json:"subjectId" validate:"required,min=1"`
+         Type string            `json:"type" validate:"required,min=1"`
+    }
+
+        // FindSelfPaper 时，any 选择题返回的结构体
+     SignalChoiceWithSerial struct{
+         SubjectNumber int64            `json:"subjectNumber" validate:"required,gt=0"`
+         Type string                    `json:"type" validate:"required,min=1"`
+         SignalChoice SignalChoiceInfo  `json:"signalChoice" validate:"required"`
+    }
+
+    PaperItem struct{
+        Type string                                     `json:"type" validate:"required,min=1"`
+        PageBar *PageBar                                 `json:"pageBar,optional"`
+        ParagraphInstruction *ParagraphInstruction       `json:"paragraphInstruction,optional"`
+        SubjectNumberAndIdPair *SubjectNumberAndIdPair   `json:"subjectNumberAndIdPair,optional"`
+        SignalChoiceWithSerial *SignalChoiceWithSerial   `json:"signalChoiceWithSerial,optional"`
+    }
+
+
+
+    AddSelfPaperReq struct{
+        PaperName       string          `json:"paperName" validate:"required,min=1"`
+        CreaterId       int64           `json:"createrId" validate:"required,min=1"`
+        Status          int64           `json:"status"`
+        StartTime       string          `json:"startTime"`
+        StopTime        string          `json:"stopTime"`
+        Version         string          `json:"version"`
+        PaperItems      []*PaperItem     `json:"paperItems"`
+        RandomSettings  []*RandomSetting `json:"randomSettings,optional"`
+    }
+
+    AddSelfPaperRespData struct{
+        Result bool     `json:"result"`
+        Id string       `json:"id"`
+    }
+
+    AddSelfPaperResp struct{
+        Code        int64          `json:"code"`
+        Message     string         `json:"message"`
+        Data        AddSelfPaperRespData  `json:"data"`
+    }
+
+
+
+    UpdateSelfPaperReq struct{
+        Id              string                  `json:"id"`
+        PaperName       string                  `json:"paperName"`
+        CreaterId       int64                   `json:"createrId"`
+        Status          int64                   `json:"status"`
+        StartTime       string                  `json:"startTime"`
+        StopTime        string                  `json:"stopTime"`
+        Version         string                  `json:"version"`
+        PaperItems      []*PaperItem            `json:"paperItems"`
+        RandomSettings  []*RandomSetting        `json:"randomSettings,optional"`
+    }
+
+    UpdateSelfPaperRespData struct{
+        Result bool `json:"result"`
+    }
+
+    UpdateSelfPaperResp struct{
+        Code        int64          `json:"code"`
+        Message     string         `json:"message"`
+        Data        UpdateSelfPaperRespData  `json:"data"`
+    }
+
+    DeleteSelfPaperReq struct{
+        Id string   `json:"id"`
+    }
+
+    DeleteSelfPaperRespData struct{
+        Result bool `json:"result"`
+    }
+
+    DeleteSelfPaperResp struct{
+        Code        int64        `json:"code"`
+        Message     string       `json:"message"`
+        Data        DeleteSelfPaperRespData  `json:"data"`
+    }
+
+    FindSelfPaperReq struct{
+        Id string   `json:"id"`
+    }
+
+//    //  作为不确定的题目返回结构体
+//    SignalChoiceWithSerial struct{
+//        SubjectNumber int64             `json:"subjectNumber"`
+//        Type          string            `json:"type"`
+//        SignalChoice  SignalChoiceInfo     `json:"signalChoice"`
+//    }
+
+    FindSelfPaperResp struct{
+        Code        int64          `json:"code"`
+        Message     string         `json:"message"`
+        Data        SelfPaperInfo  `json:"data"`
+    }
+
+)
+
+@server(
+    jwt: Auth
+    group: subject/selfpaper
+)
+service front-api {
+    @handler AddSelfPaper
+    post /api/subject/selfpaper/addselfpaper (AddSelfPaperReq) returns (AddSelfPaperResp)
+
+    @handler UpdateSelfPaper
+    post /api/subject/selfpaper/updateselfpaper (UpdateSelfPaperReq) returns (UpdateSelfPaperResp)
+
+    @handler DeleteSelfPaper
+    post /api/subject/selfpaper/deleteselfpaper (DeleteSelfPaperReq) returns (DeleteSelfPaperResp)
+
+    @handler FindSelfPaper
+    post /api/subject/selfpaper/findselfpaper (FindSelfPaperReq) returns (FindSelfPaperResp)
+}
+

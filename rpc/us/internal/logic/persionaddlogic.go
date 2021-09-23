@@ -29,7 +29,7 @@ func NewPersionAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Persio
 func (l *PersionAddLogic) PersionAdd(in *us.PersionAddReq) (*us.PersionAddResp, error) {
 	// todo: add your logic here and delete this line
 
-	_,err := l.svcCtx.UsUsersModel.Insert(usmodel.UsUsers{
+	_, err := l.svcCtx.UsUsersModel.Insert(usmodel.UsUsers{
 		PhoneNumber: sql.NullString{
 			String: in.Data.PhoneNumber,
 			Valid:  true,
@@ -79,7 +79,7 @@ func (l *PersionAddLogic) PersionAdd(in *us.PersionAddReq) (*us.PersionAddResp, 
 			Valid: false,
 		},
 	})
-	if err != nil{
+	if err != nil {
 		return &us.PersionAddResp{
 			Result: false,
 		}, err

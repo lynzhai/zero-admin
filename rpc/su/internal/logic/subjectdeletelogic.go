@@ -44,8 +44,8 @@ func (l *SubjectDeleteLogic) SubjectDelete(in *su.SubjectDeleteReq) (*su.Subject
 
 	err = l.svcCtx.SuSubjectModel.DeleteSoft(in.Id)
 
-	if err != nil{
-		logx.Errorf("DeleteSoft err:"+ err.Error())
+	if err != nil {
+		logx.Errorf("DeleteSoft err:" + err.Error())
 		return &su.SubjectDeleteResp{
 			Result: false,
 		}, err

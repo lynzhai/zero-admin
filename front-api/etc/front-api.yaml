@@ -2,9 +2,13 @@ Name: front-api
 Host: 0.0.0.0
 Port: 801
 
+Log:
+  Mode: console
+  Level: info
+
 Auth:
   AccessSecret: ad87xxxxxxx5d54b7d
-  AccessExpire: 86400
+  AccessExpire: 864000
 
 #系统
 SysRpc:

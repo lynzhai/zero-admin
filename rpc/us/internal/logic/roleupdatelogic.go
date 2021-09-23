@@ -27,17 +27,17 @@ func NewRoleUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RoleUp
 func (l *RoleUpdateLogic) RoleUpdate(in *us.RoleUpdateReq) (*us.RoleUpdateResp, error) {
 	// todo: add your logic here and delete this line
 	err := l.svcCtx.UsRolesModel.Update(usmodel.UsRoles{
-		Id:       in.Data.Id,
+		Id: in.Data.Id,
 		RoleName: sql.NullString{
 			String: in.Data.RoleName,
 			Valid:  true,
 		},
-		Remark:   sql.NullString{
+		Remark: sql.NullString{
 			String: in.Data.Remark,
 			Valid:  true,
 		},
 	})
-	if err != nil{
+	if err != nil {
 		return &us.RoleUpdateResp{
 			Result: false,
 		}, err

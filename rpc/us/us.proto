@@ -56,10 +56,11 @@ message PersionDeleteResp {
 
 message RoleData {
   int64        Id = 1;
-  string       RoleName = 2;
-  string       Remark = 3;
-  string       CreateTime = 4;
-  string       UpdateTime = 5;
+  int64        RoleTypeId = 2;
+  string       RoleName = 3;
+  string       Remark = 4;
+  string       CreateTime = 5;
+  string       UpdateTime = 6;
 }
 
 
@@ -113,10 +114,12 @@ message RoleDeleteResp {
 message PersionLoginReq {
   string PhoneNumber = 1;
   string Password = 2;
+  string Captcha = 3;     // 验证码
+  string CaptchaId = 4; // 验证码ID
 }
 
 message PersionLoginResp {
-    PersionInfo Info = 1;
+  PersionInfo Info = 1;
 }
 
 message PersionRegisterReq {
@@ -127,12 +130,12 @@ message PersionRegisterReq {
   string  Gender = 5;
   string  Name = 6;
   int64   RoleId = 7;
-  string  class = 8;
-  string  academy = 9;
-  string  school = 10;
-  string  grade = 11;
-
-
+  string  ClassName = 8;
+  string  Academy = 9;
+  string  School = 10;
+  string  Grade = 11;
+  string  emailId = 12;
+  string  emailCode = 13;
 }
 
 message PersionRegisterResp {
@@ -151,12 +154,13 @@ message PersionInfo{
   int64        State = 8;
   string       CreateTime = 9;
   string       UpdateTime = 10;
-  int64        roleId = 11;
-  string       roleName = 12;
-  string       class = 13;
-  string       academy = 14;
-  string       school = 15;
-  string       grade = 16;
+  int64        RoleId = 11;
+  int64        RoleTypeId = 12;
+  string       RoleName = 13;
+  string       ClassName = 14;
+  string       Academy = 15;
+  string       School = 16;
+  string       Grade = 17;
 
 }
 
@@ -166,7 +170,7 @@ message PersionInfoReq {
 }
 
 message PersionInfoResp {
-    PersionInfo Info = 1;
+  PersionInfo Info = 1;
 }
 
 //message PersionRolesReq {
@@ -180,6 +184,23 @@ message PersionInfoResp {
 //  repeated PersionRole List = 1;
 //}
 
+
+message CaptchaReq {
+}
+
+message CaptchaResp {
+  string CaptchaId = 1;
+  string PicPath = 2;
+}
+
+
+message EmailCodeReq {
+   string Email = 1;
+}
+
+message EmailCodeResp {
+  string EmailId = 1;
+}
 
 service Us {
   rpc PersionAdd(PersionAddReq) returns(PersionAddResp);
@@ -198,5 +219,9 @@ service Us {
   rpc PersionRegister(PersionRegisterReq) returns(PersionRegisterResp);
 
   rpc PersionInfo(PersionInfoReq) returns(PersionInfoResp);
+
+  rpc Captcha(CaptchaReq) returns(CaptchaResp);
+
+  rpc EmailCode(EmailCodeReq) returns(EmailCodeResp);
 
 }
